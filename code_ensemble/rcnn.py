@@ -1,6 +1,5 @@
 import sys
 import os
-sys.path.insert(0, os.path.join(os.pardir, 'packages'))
 import cv2
 import pandas as pd
 import numpy as np
