@@ -21,15 +21,15 @@ if __name__ == "__main__":
     img_size = 128
     img_channels = 3
     batch_size = 4
-    train_path = '/home/paperspace/bowl/input/stage1_train/'
-    test_path = '/home/paperspace/bowl/input/stage1_test/'
-    model_path = '/home/paperspace/bowl/models/%sweights.{epoch:03d}-{val_loss:.4f}.hdf5' % img_size
-    classes_csv = '/home/paperspace/bowl/input/classes.csv'
+#     train_path = '/home/paperspace/bowl/input/stage1_train/'
+#     test_path = '/home/paperspace/bowl/input/stage1_test/'
+#     model_path = '/home/paperspace/bowl/models/%sweights.{epoch:03d}-{val_loss:.4f}.hdf5' % img_size
+#     classes_csv = '/home/paperspace/bowl/input/classes.csv'
 
-    # train_path = '/Users/wep/Kaggle/bowl/input/stage1_train/'
-    # test_path = '/Users/wep/Kaggle/bowl/input/stage1_test/'
-    # model_path = '/Users/wep/Kaggle/bowl/models/weights.{epoch:02d}-{val_loss:.2f}.hdf5'
-    # classes_csv = '/Users/wep/Kaggle/bowl/input/classes.csv'
+    train_path = '/Users/wep/Kaggle/bowl/input/stage1_train/'
+    test_path = '/Users/wep/Kaggle/bowl/input/stage1_test/'
+    model_path = '/Users/wep/Kaggle/bowl/models/weights.{epoch:02d}-{val_loss:.2f}.hdf5'
+    classes_csv = '/Users/wep/Kaggle/bowl/input/classes.csv'
     
     X_train, Y_train, test_img_df, num_classes = utils.make_df(train_path, test_path, img_size, classes_csv)
 
