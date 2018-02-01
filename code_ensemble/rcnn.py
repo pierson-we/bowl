@@ -120,7 +120,7 @@ if __name__ == "__main__":
 
     model_input = Input((img_size, img_size, img_channels))
 
-    model = keras_rcnn.models.RCNAA(model_input, classes=num_classes + 1)
+    model = keras_rcnn.models.RCNN(model_input, classes=num_classes + 1)
 
     adam = Adam(0.0001)
 
