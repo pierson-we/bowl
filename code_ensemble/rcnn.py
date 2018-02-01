@@ -35,7 +35,7 @@ if __name__ == "__main__":
     
     model_input = Input((img_size, img_size, img_channels))
 
-    model = keras_rcnn.models._rcnn.RCNN(model_input, classes=num_classes + 1)
+    model = keras_rcnn.models.RCNN(model_input, classes=num_classes + 1)
     
     X_train, Y_train, test_img_df, num_classes = utils.make_df(train_path, test_path, img_size, classes_csv)
 
