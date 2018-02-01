@@ -1,0 +1,3 @@
+[submodule "keras-rcnn"]
+	path = keras-rcnn
+	url = https://github.com/broadinstitute/keras-rcnn.git
