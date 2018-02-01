@@ -31,10 +31,6 @@ if __name__ == "__main__":
     # model_path = '/Users/wep/Kaggle/bowl/models/weights.{epoch:02d}-{val_loss:.2f}.hdf5'
     # classes_csv = '/Users/wep/Kaggle/bowl/input/classes.csv'
     
-    model_input = Input((img_size, img_size, img_channels))
-
-    model = RCNN(model_input, classes=num_classes + 1)
-    
     X_train, Y_train, test_img_df, num_classes = utils.make_df(train_path, test_path, img_size, classes_csv)
 
     xtr, xval, ytr, yval = train_test_split(X_train, Y_train, test_size=0.1, random_state=7)
@@ -122,6 +118,10 @@ if __name__ == "__main__":
     checkpoint = callbacks.ModelCheckpoint(model_path, monitor='loss', verbose=0, save_best_only=True, save_weights_only=True, mode='auto', period=10)
     LR = callbacks.LearningRateScheduler(utils.lr_schedule)
 
+    model_input = Input((img_size, img_size, img_channels))
+
+    model = RCNN(model_input, classes=num_classes + 1)
+    
     adam = Adam(0.0001)
 
     model.compile(optimizer=adam) # , loss='binary_crossentropy', metrics=[losses.mean_iou, losses.dice_coef, losses.precision, 'acc'])
