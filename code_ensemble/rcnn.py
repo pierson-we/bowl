@@ -1,3 +1,4 @@
+sys.path.insert(0, "../packages")
 import cv2
 import os
 import sys
@@ -18,8 +19,6 @@ import losses
 
 
 if __name__ == "__main__":
-    sys.path.insert(0, "./")
-    
     img_size = 128
     img_channels = 3
     batch_size = 4
