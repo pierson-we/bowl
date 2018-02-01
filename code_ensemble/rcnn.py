@@ -10,7 +10,7 @@ from keras.losses import logcosh
 from keras import callbacks
 from keras.models import Model
 from keras.layers import Input, Conv2D, concatenate, average, Dropout
-import keras_rcnn.models import RCNN
+from keras_rcnn.models import RCNN
 import matplotlib.pyplot as plt
 import utils
 import models
