@@ -10,7 +10,7 @@ from keras.losses import logcosh
 from keras import callbacks
 from keras.models import Model
 from keras.layers import Input, Conv2D, concatenate, average, Dropout
-import keras_rcnn
+import keras_rcnn.models import RCNN
 import matplotlib.pyplot as plt
 import utils
 import models
@@ -33,7 +33,7 @@ if __name__ == "__main__":
     
     model_input = Input((img_size, img_size, img_channels))
 
-    model = keras_rcnn.models.RCNN(model_input, classes=num_classes + 1)
+    model = RCNN(model_input, classes=num_classes + 1)
     
     X_train, Y_train, test_img_df, num_classes = utils.make_df(train_path, test_path, img_size, classes_csv)
 
