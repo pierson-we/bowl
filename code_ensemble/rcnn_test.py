@@ -7,7 +7,7 @@ import json
 
 train_json_file = '/home/paperspace/bowl/input/DSB208_train.json'
 test_json_file = '/home/paperspace/bowl/input/DSB208_test.json'
-img_size=256
+img_size=None
 batch_size=1
 
 # training, test = datasets.load_data('DSB2018')
@@ -49,7 +49,7 @@ with open(test_json_file, 'r') as file:
 
 generator = preprocessing.ObjectDetectionGenerator()
 
-generator = generator.flow(training, classes, target_shape=(img_size, img_size), scale=1.0, batch_size=batch_size)
+generator = generator.flow(training, classes) #, target_shape=(img_size, img_size), scale=1.0, batch_size=batch_size)
 
 # val_generator = preprocessing.ObjectDetectionGenerator()
 
