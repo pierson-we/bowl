@@ -10,7 +10,7 @@ test_json_file = '/home/paperspace/bowl/input/DSB208_test.json'
 img_size=None
 batch_size=1
 
-# training, test = datasets.load_data('DSB2018')
+training, test = datasets.load_data('malaria')
 
 # training, validation = sklearn.model_selection.train_test_split(training)
 
@@ -18,14 +18,15 @@ classes = {
     "nucleus": 1
 }
 
-# print(type(training))
-# print(training[0])
+print(type(training))
+print(training[0])
+print(training[0].keys())
 
-with open(train_json_file, 'r') as file:
-	training = json.loads(file.read())
+# with open(train_json_file, 'r') as file:
+# 	training = json.loads(file.read())
 
-with open(test_json_file, 'r') as file:
-	test = json.loads(file.read())
+# with open(test_json_file, 'r') as file:
+# 	test = json.loads(file.read())
 
 # for item in test:
 # 	del item['image']['shape']
@@ -46,11 +47,11 @@ with open(test_json_file, 'r') as file:
 # 		x['y1'] = x['bounding_box']['minimum']['r']
 # 		x['y2'] = x['bounding_box']['maximum']['r']
 
-with open(train_json_file, 'w') as file:
-	json.dump(training, file)
+# with open(train_json_file, 'w') as file:
+# 	json.dump(training, file)
 
-with open(test_json_file, 'w') as file:
-	json.dump(test, file)
+# with open(test_json_file, 'w') as file:
+# 	json.dump(test, file)
 
 generator = preprocessing.ObjectDetectionGenerator()
 # generator = preprocessing.ImageSegmentationGenerator()
