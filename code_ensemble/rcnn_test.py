@@ -10,7 +10,7 @@ test_json_file = '/home/paperspace/bowl/input/DSB208_test.json'
 img_size=256
 batch_size=1
 
-# training, test = datasets.load_data('DSB2018')
+training, test = datasets.load_data('DSB2018')
 
 # training, validation = sklearn.model_selection.train_test_split(training)
 
@@ -21,24 +21,32 @@ classes = {
 # print(type(training))
 # print(training[0])
 
-# for item in test:
-# 	item['shape'] = (item['image']['shape']['r'], item['image']['shape']['c'], item['image']['shape']['channels'])
-# 	item['filename'] = item['image']['pathname']
+for item in test:
+	item['shape'] = (item['image']['shape']['r'], item['image']['shape']['c'], item['image']['shape']['channels'])
+	item['filename'] = item['image']['pathname']
 
-# for item in training:
-# 	item['shape'] = (item['image']['shape']['r'], item['image']['shape']['c'], item['image']['shape']['channels'])
-# 	item['filename'] = item['image']['pathname']
-# 	item['boxes'] = item['objects']
-# 	for x in item['boxes']:
-# 		x['x1'] = x['bounding_box']['minimum']['c']
-# 		x['x2'] = x['bounding_box']['maximum']['c']
-# 		x['y1'] = x['bounding_box']['minimum']['r']
-# 		x['y2'] = x['bounding_box']['maximum']['r']
+for item in training:
+	item['shape'] = (item['image']['shape']['r'], item['image']['shape']['c'], item['image']['shape']['channels'])
+	item['filename'] = item['image']['pathname']
+	item['boxes'] = item['objects']
+	for x in item['boxes']:
+		x['x1'] = x['bounding_box']['minimum']['c']
+		x['x2'] = x['bounding_box']['maximum']['c']
+		x['y1'] = x['bounding_box']['minimum']['r']
+		x['y2'] = x['bounding_box']['maximum']['r']
 
 with open(train_json_file, 'w') as file:
-	training = json.loads(file.read())
+	json.dumps(train, file)
 
 with open(test_json_file, 'w') as file:
+	json.dumps(test, file)
+	
+sys.exit()
+
+with open(train_json_file, 'r') as file:
+	training = json.loads(file.read())
+
+with open(test_json_file, 'r') as file:
 	test = json.loads(file.read())
 
 generator = preprocessing.ObjectDetectionGenerator()
