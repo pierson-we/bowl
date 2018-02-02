@@ -24,9 +24,9 @@ with open(train_json_file, 'r') as file:
 with open(test_json_file, 'r') as file:
 	test = json.loads(file.read())
 
-# print(type(training))
-# print(training[0])
-# print(training[0].keys())
+print(type(training))
+print(training[0])
+print(training[0].keys())
 
 # for item in test:
 # 	item['shape'] = (item['image']['shape']['r'], item['image']['shape']['c'], item['image']['shape']['channels'])
