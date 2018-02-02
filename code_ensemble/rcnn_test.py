@@ -10,7 +10,7 @@ test_json_file = '/home/paperspace/bowl/DSB208_test.json'
 img_size=None
 batch_size=1
 
-training, test = datasets.load_data('DSB2018')
+# training, test = datasets.load_data('DSB2018')
 
 # training, validation = sklearn.model_selection.train_test_split(training)
 
@@ -24,9 +24,9 @@ with open(train_json_file, 'r') as file:
 with open(test_json_file, 'r') as file:
 	test = json.loads(file.read())
 
-print(type(training))
-print(training[0])
-print(training[0].keys())
+# print(type(training))
+# print(training[0])
+# print(training[0].keys())
 
 # for item in test:
 # 	item['shape'] = (item['image']['shape']['r'], item['image']['shape']['c'], item['image']['shape']['channels'])
