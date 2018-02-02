@@ -5,7 +5,7 @@ import matplotlib
 import keras
 
 img_size=256
-batch_size=2
+batch_size=1
 
 training, test = datasets.load_data('DSB2018')
 
