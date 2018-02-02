@@ -5,7 +5,8 @@ import matplotlib
 import keras
 import json
 
-json_file = '/home/paperspace/bowl/input/DSB208.json'
+train_json_file = '/home/paperspace/bowl/input/DSB208_train.json'
+test_json_file = '/home/paperspace/bowl/input/DSB208_test.json'
 img_size=256
 batch_size=1
 
@@ -20,18 +21,22 @@ classes = {
 # print(type(training))
 # print(training[0])
 
-for item in training:
+for item in test:
 	item['shape'] = (item['image']['shape']['r'], item['image']['shape']['c'], item['image']['shape']['channels'])
 	item['filename'] = item['image']['pathname']
-	item['boxes'] = item['objects']
-	for x in item['boxes']:
-		x['x1'] = x['bounding_box']['minimum']['c']
-		x['x2'] = x['bounding_box']['maximum']['c']
-		x['y1'] = x['bounding_box']['minimum']['r']
-		x['y2'] = x['bounding_box']['maximum']['r']
 
-with open(json_file, 'w') as file:
-	json.dump(training, file)
+# for item in training:
+# 	item['shape'] = (item['image']['shape']['r'], item['image']['shape']['c'], item['image']['shape']['channels'])
+# 	item['filename'] = item['image']['pathname']
+# 	item['boxes'] = item['objects']
+# 	for x in item['boxes']:
+# 		x['x1'] = x['bounding_box']['minimum']['c']
+# 		x['x2'] = x['bounding_box']['maximum']['c']
+# 		x['y1'] = x['bounding_box']['minimum']['r']
+# 		x['y2'] = x['bounding_box']['maximum']['r']
+
+with open(test_json_file, 'w') as file:
+	json.dump(test, file)
 sys.exit()
 
 generator = preprocessing.ObjectDetectionGenerator()
