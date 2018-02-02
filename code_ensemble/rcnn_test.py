@@ -47,8 +47,8 @@ with open(train_json_file, 'r') as file:
 with open(test_json_file, 'r') as file:
 	test = json.loads(file.read())
 
-generator = preprocessing.ObjectDetectionGenerator()
-
+# generator = preprocessing.ObjectDetectionGenerator()
+generator = preprocessing.ImageSegmentationGenerator()
 generator = generator.flow(training, classes) #, target_shape=(img_size, img_size), scale=1.0, batch_size=batch_size)
 
 # val_generator = preprocessing.ObjectDetectionGenerator()
