@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 import keras_rcnn
 from keras_rcnn import backend, classifiers, datasets, layers, models, preprocessing
 import numpy
