@@ -10,7 +10,7 @@ test_json_file = '/home/paperspace/bowl/input/DSB208_test.json'
 img_size=None
 batch_size=1
 
-training, test = datasets.load_data('malaria')
+training, validation, test = datasets.load_data('malaria')
 
 # training, validation = sklearn.model_selection.train_test_split(training)
 
