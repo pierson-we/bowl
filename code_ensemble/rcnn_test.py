@@ -3,7 +3,9 @@ from keras_rcnn import backend, datasets, layers, models, preprocessing
 import numpy
 import matplotlib
 import keras
+import json
 
+json_file = '/home/paperspace/bowl/input/DSB208.json'
 img_size=256
 batch_size=1
 
@@ -27,6 +29,10 @@ for item in training:
 		x['x2'] = x['bounding_box']['maximum']['c']
 		x['y1'] = x['bounding_box']['minimum']['r']
 		x['y2'] = x['bounding_box']['maximum']['r']
+
+with open(json_file, 'w') as file:
+	json.dump(training, file)
+sys.exit()
 
 generator = preprocessing.ObjectDetectionGenerator()
 
