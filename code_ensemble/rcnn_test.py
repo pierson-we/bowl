@@ -10,7 +10,7 @@ test_json_file = '/home/paperspace/bowl/input/DSB208_test.json'
 img_size=None
 batch_size=1
 
-training, validation, test = datasets.load_data('malaria')
+# training, validation, test = datasets.load_data('malaria')
 
 # training, validation = sklearn.model_selection.train_test_split(training)
 
@@ -18,15 +18,15 @@ classes = {
     "nucleus": 1
 }
 
+with open(train_json_file, 'r') as file:
+	training = json.loads(file.read())
+
+with open(test_json_file, 'r') as file:
+	test = json.loads(file.read())
+
 print(type(training))
 print(training[0])
 print(training[0].keys())
-
-# with open(train_json_file, 'r') as file:
-# 	training = json.loads(file.read())
-
-# with open(test_json_file, 'r') as file:
-# 	test = json.loads(file.read())
 
 # for item in test:
 # 	del item['image']['shape']
