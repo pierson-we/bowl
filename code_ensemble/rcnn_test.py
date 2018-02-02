@@ -36,10 +36,10 @@ for item in training:
 		x['y2'] = x['bounding_box']['maximum']['r']
 
 with open(train_json_file, 'w') as file:
-	json.dumps(training, file)
+	json.dump(training, file)
 
 with open(test_json_file, 'w') as file:
-	json.dumps(test, file)
+	json.dump(test, file)
 	
 sys.exit()
 
