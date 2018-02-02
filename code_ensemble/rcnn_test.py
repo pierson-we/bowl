@@ -34,7 +34,8 @@ with open(test_json_file, 'r') as file:
 # 	del item['image']['shape']
 # 	del item['image']['pathname']
 
-# for item in training:
+for item in training:
+	del item['image']
 # 	item['shape'] = (item['image']['shape']['r'], item['image']['shape']['c'], item['image']['shape']['channels'])
 # 	item['filename'] = item['image']['pathname']
 # 	item['boxes'] = []
@@ -48,6 +49,7 @@ with open(test_json_file, 'r') as file:
 # 	del item['image']['shape']
 # 	del item['image']['pathname']
 # 	del item['objects']
+	
 
 # with open(train_json_file, 'w') as file:
 # 	json.dump(training, file)
