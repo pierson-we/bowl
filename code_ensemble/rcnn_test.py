@@ -27,7 +27,7 @@ for item in training:
 		x['y2'] = x['bounding_box']['maximum']['r']
 generator = preprocessing.ObjectDetectionGenerator()
 
-generator = generator.flow(training, classes, target_shape=(img_size, img_size), scale=1, batch_size=batch_size)
+generator = generator.flow(training, classes, batch_size=batch_size) # target_shape=(img_size, img_size), scale=1, batch_size=batch_size)
 
 for x in range(0, 5):
 	(target_bounding_boxes, target_image, target_scores, _), _ = generator.next()
