@@ -10,7 +10,7 @@ test_json_file = '/home/paperspace/bowl/input/DSB208_test.json'
 img_size=256
 batch_size=1
 
-training, test = datasets.load_data('DSB2018')
+# training, test = datasets.load_data('DSB2018')
 
 # training, validation = sklearn.model_selection.train_test_split(training)
 
@@ -21,9 +21,9 @@ classes = {
 # print(type(training))
 # print(training[0])
 
-for item in test:
-	item['shape'] = (item['image']['shape']['r'], item['image']['shape']['c'], item['image']['shape']['channels'])
-	item['filename'] = item['image']['pathname']
+# for item in test:
+# 	item['shape'] = (item['image']['shape']['r'], item['image']['shape']['c'], item['image']['shape']['channels'])
+# 	item['filename'] = item['image']['pathname']
 
 # for item in training:
 # 	item['shape'] = (item['image']['shape']['r'], item['image']['shape']['c'], item['image']['shape']['channels'])
@@ -35,9 +35,11 @@ for item in test:
 # 		x['y1'] = x['bounding_box']['minimum']['r']
 # 		x['y2'] = x['bounding_box']['maximum']['r']
 
+with open(train_json_file, 'w') as file:
+	training = json.loads(file.read())
+
 with open(test_json_file, 'w') as file:
-	json.dump(test, file)
-sys.exit()
+	test = json.loads(file.read())
 
 generator = preprocessing.ObjectDetectionGenerator()
 
