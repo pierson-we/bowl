@@ -1,5 +1,5 @@
 import keras_rcnn
-from keras_rcnn import backend, classifiers, datasets, layers, models, preprocessing
+from keras_rcnn import backend, datasets, layers, models, preprocessing
 import numpy
 import matplotlib
 import keras
