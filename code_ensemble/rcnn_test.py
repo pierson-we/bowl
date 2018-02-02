@@ -27,16 +27,16 @@ with open(train_json_file, 'r') as file:
 with open(test_json_file, 'r') as file:
 	test = json.loads(file.read())
 
-for item in test:
-	del item['image']['shape']
-	del item['image']['pathname']
-# 	item['shape'] = (item['image']['shape']['r'], item['image']['shape']['c'], item['image']['shape']['channels'])
-# 	item['filename'] = item['image']['pathname']
+# for item in test:
+# 	del item['image']['shape']
+# 	del item['image']['pathname']
+# # 	item['shape'] = (item['image']['shape']['r'], item['image']['shape']['c'], item['image']['shape']['channels'])
+# # 	item['filename'] = item['image']['pathname']
 
-for item in training:
-	del item['image']['shape']
-	del item['image']['pathname']
-	del item['objects']
+# for item in training:
+# 	del item['image']['shape']
+# 	del item['image']['pathname']
+# 	del item['objects']
 # 	item['shape'] = (item['image']['shape']['r'], item['image']['shape']['c'], item['image']['shape']['channels'])
 # 	item['filename'] = item['image']['pathname']
 # 	item['boxes'] = item['objects']
