@@ -5,12 +5,12 @@ import matplotlib
 import keras
 import json
 
-train_json_file = '/home/paperspace/bowl/input/DSB208_train.json'
-test_json_file = '/home/paperspace/bowl/input/DSB208_test.json'
+train_json_file = '/home/paperspace/bowl/DSB208_train.json'
+test_json_file = '/home/paperspace/bowl/DSB208_test.json'
 img_size=None
 batch_size=1
 
-training, validation, test = datasets.load_data('malaria')
+training, test = datasets.load_data('DSB2018')
 
 # training, validation = sklearn.model_selection.train_test_split(training)
 
@@ -28,30 +28,32 @@ print(type(training))
 print(training[0])
 print(training[0].keys())
 
-# for item in test:
-# 	del item['image']['shape']
-# 	del item['image']['pathname']
-# # 	item['shape'] = (item['image']['shape']['r'], item['image']['shape']['c'], item['image']['shape']['channels'])
-# # 	item['filename'] = item['image']['pathname']
+for item in test:
+	item['shape'] = (item['image']['shape']['r'], item['image']['shape']['c'], item['image']['shape']['channels'])
+	item['filename'] = item['image']['pathname']
+	del item['image']['shape']
+	del item['image']['pathname']
 
-# for item in training:
-# 	del item['image']['shape']
-# 	del item['image']['pathname']
-# 	del item['objects']
-# 	item['shape'] = (item['image']['shape']['r'], item['image']['shape']['c'], item['image']['shape']['channels'])
-# 	item['filename'] = item['image']['pathname']
-# 	item['boxes'] = item['objects']
-# 	for x in item['boxes']:
-# 		x['x1'] = x['bounding_box']['minimum']['c']
-# 		x['x2'] = x['bounding_box']['maximum']['c']
-# 		x['y1'] = x['bounding_box']['minimum']['r']
-# 		x['y2'] = x['bounding_box']['maximum']['r']
+for item in training:
+	item['shape'] = (item['image']['shape']['r'], item['image']['shape']['c'], item['image']['shape']['channels'])
+	item['filename'] = item['image']['pathname']
+	item['boxes'] = []
+	for x in item['objects']:
+		item['boxes'].append({})
+		item['boxes'][-1]['class'] = x['class']
+		item['boxes'][-1]['x1'] = x['bounding_box']['minimum']['c']
+		item['boxes'][-1]['x2'] = x['bounding_box']['maximum']['c']
+		item['boxes'][-1]['y1'] = x['bounding_box']['minimum']['r']
+		item['boxes'][-1]['y2'] = x['bounding_box']['maximum']['r']
+	del item['image']['shape']
+	del item['image']['pathname']
+	del item['objects']
 
-# with open(train_json_file, 'w') as file:
-# 	json.dump(training, file)
+with open(train_json_file, 'w') as file:
+	json.dump(training, file)
 
-# with open(test_json_file, 'w') as file:
-# 	json.dump(test, file)
+with open(test_json_file, 'w') as file:
+	json.dump(test, file)
 
 generator = preprocessing.ObjectDetectionGenerator()
 # generator = preprocessing.ImageSegmentationGenerator()
