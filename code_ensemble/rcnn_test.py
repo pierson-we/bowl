@@ -76,7 +76,7 @@ optimizer = keras.optimizers.Adam(0.0001)
 
 model.compile(optimizer)
 
-model.fit_generator(generator, epochs=10)
+model.fit_generator(generator, epochs=1)
 
 # visualize prediction
 example, _ = generator.next()
@@ -93,24 +93,24 @@ output_scores = numpy.squeeze(output_scores)
 _, axis = matplotlib.pyplot.subplots(1)
 axis.imshow(target_image)
 for index, label in enumerate(target_labels):
-if label == 1:
-    xy = [
-	target_bounding_boxes[index][0],
-	target_bounding_boxes[index][1]
-    ]
-    w = target_bounding_boxes[index][2] - target_bounding_boxes[index][0]
-    h = target_bounding_boxes[index][3] - target_bounding_boxes[index][1]
-    rectangle = matplotlib.patches.Rectangle(xy, w, h, edgecolor="g", facecolor="none")
-    axis.add_patch(rectangle)
+	if label == 1:
+	    xy = [
+		target_bounding_boxes[index][0],
+		target_bounding_boxes[index][1]
+	    ]
+	    w = target_bounding_boxes[index][2] - target_bounding_boxes[index][0]
+	    h = target_bounding_boxes[index][3] - target_bounding_boxes[index][1]
+	    rectangle = matplotlib.patches.Rectangle(xy, w, h, edgecolor="g", facecolor="none")
+	    axis.add_patch(rectangle)
 for index, score in enumerate(output_scores):
-if score > 0.95:
-    xy = [
-	output_anchors[index][0],
-	output_anchors[index][1]
-    ]
-    w = output_anchors[index][2] - output_anchors[index][0]
-    h = output_anchors[index][3] - output_anchors[index][1]
-    rectangle = matplotlib.patches.Rectangle(xy, w, h, edgecolor="r", facecolor="none")
-    axis.add_patch(rectangle)
+	if score > 0.95:
+	    xy = [
+		output_anchors[index][0],
+		output_anchors[index][1]
+	    ]
+	    w = output_anchors[index][2] - output_anchors[index][0]
+	    h = output_anchors[index][3] - output_anchors[index][1]
+	    rectangle = matplotlib.patches.Rectangle(xy, w, h, edgecolor="r", facecolor="none")
+	    axis.add_patch(rectangle)
 matplotlib.pyplot.show()
 
