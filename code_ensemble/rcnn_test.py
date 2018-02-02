@@ -29,36 +29,36 @@ generator = preprocessing.ObjectDetectionGenerator()
 
 generator = generator.flow(training, classes, batch_size=batch_size) # target_shape=(img_size, img_size), scale=1, batch_size=batch_size)
 
-for x in range(0, 5):
-	(target_bounding_boxes, target_image, target_scores, _), _ = generator.next()
+# for x in range(0, 5):
+# 	(target_bounding_boxes, target_image, target_scores, _), _ = generator.next()
 
-	target_bounding_boxes = numpy.squeeze(target_bounding_boxes)
+# 	target_bounding_boxes = numpy.squeeze(target_bounding_boxes)
 
-	target_image = numpy.squeeze(target_image)
+# 	target_image = numpy.squeeze(target_image)
 
-	target_scores = numpy.argmax(target_scores, -1)
+# 	target_scores = numpy.argmax(target_scores, -1)
 
-	target_scores = numpy.squeeze(target_scores)
+# 	target_scores = numpy.squeeze(target_scores)
 
-	_, axis = matplotlib.pyplot.subplots(1, figsize=(12, 8))
+# 	_, axis = matplotlib.pyplot.subplots(1, figsize=(12, 8))
 
-	axis.imshow(target_image)
+# 	axis.imshow(target_image)
 
-	for target_index, target_score in enumerate(target_scores):
-	    if target_score > 0:
-	        xy = [
-	            target_bounding_boxes[target_index][0],
-	            target_bounding_boxes[target_index][1]
-	        ]
+# 	for target_index, target_score in enumerate(target_scores):
+# 	    if target_score > 0:
+# 	        xy = [
+# 	            target_bounding_boxes[target_index][0],
+# 	            target_bounding_boxes[target_index][1]
+# 	        ]
 
-	        w = target_bounding_boxes[target_index][2] - target_bounding_boxes[target_index][0]
-	        h = target_bounding_boxes[target_index][3] - target_bounding_boxes[target_index][1]
+# 	        w = target_bounding_boxes[target_index][2] - target_bounding_boxes[target_index][0]
+# 	        h = target_bounding_boxes[target_index][3] - target_bounding_boxes[target_index][1]
 
-	        rectangle = matplotlib.patches.Rectangle(xy, w, h, edgecolor="r", facecolor="none")
+# 	        rectangle = matplotlib.patches.Rectangle(xy, w, h, edgecolor="r", facecolor="none")
 
-	        axis.add_patch(rectangle)
+# 	        axis.add_patch(rectangle)
 
-	matplotlib.pyplot.show()
+# 	matplotlib.pyplot.show()
 
 image = keras.layers.Input((None, None, 3))
 
