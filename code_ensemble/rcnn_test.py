@@ -69,5 +69,5 @@ optimizer = keras.optimizers.Adam(0.0001)
 
 model.compile(optimizer)
 
-model.fit_generator(generator)
+model.fit_generator(generator, epochs=10)
 
