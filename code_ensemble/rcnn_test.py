@@ -21,11 +21,22 @@ classes = {
 # print(type(training))
 # print(training[0])
 
-# for item in test:
+with open(train_json_file, 'r') as file:
+	training = json.loads(file.read())
+
+with open(test_json_file, 'r') as file:
+	test = json.loads(file.read())
+
+for item in test:
+	del item['image']['shape']
+	del item['image']['pathname']
 # 	item['shape'] = (item['image']['shape']['r'], item['image']['shape']['c'], item['image']['shape']['channels'])
 # 	item['filename'] = item['image']['pathname']
 
-# for item in training:
+for item in training:
+	del item['image']['shape']
+	del item['image']['pathname']
+	del item['objects']
 # 	item['shape'] = (item['image']['shape']['r'], item['image']['shape']['c'], item['image']['shape']['channels'])
 # 	item['filename'] = item['image']['pathname']
 # 	item['boxes'] = item['objects']
@@ -35,20 +46,14 @@ classes = {
 # 		x['y1'] = x['bounding_box']['minimum']['r']
 # 		x['y2'] = x['bounding_box']['maximum']['r']
 
-# with open(train_json_file, 'w') as file:
-# 	json.dump(training, file)
+with open(train_json_file, 'w') as file:
+	json.dump(training, file)
 
-# with open(test_json_file, 'w') as file:
-# 	json.dump(test, file)
+with open(test_json_file, 'w') as file:
+	json.dump(test, file)
 
-with open(train_json_file, 'r') as file:
-	training = json.loads(file.read())
-
-with open(test_json_file, 'r') as file:
-	test = json.loads(file.read())
-
-# generator = preprocessing.ObjectDetectionGenerator()
-generator = preprocessing.ImageSegmentationGenerator()
+generator = preprocessing.ObjectDetectionGenerator()
+# generator = preprocessing.ImageSegmentationGenerator()
 generator = generator.flow(training, classes) #, target_shape=(img_size, img_size), scale=1.0, batch_size=batch_size)
 
 # val_generator = preprocessing.ObjectDetectionGenerator()
