@@ -22,8 +22,8 @@ classes = {
     "nucleus": 1
 }
 
-# with open(train_json_file, 'r') as file:
-# 	training = json.loads(file.read())
+with open(train_json_file, 'r') as file:
+	training = json.loads(file.read())
 
 # with open(test_json_file, 'r') as file:
 # 	test = json.loads(file.read())
@@ -55,7 +55,7 @@ classes = {
 # 	del item['objects']
 
 print('loading data...')
-training = rcnn_utils.make_json(train_path, img_size)
+# training = rcnn_utils.make_json(train_path, img_size)
 
 # with open(train_json_file, 'w') as file:
 # 	json.dump(training, file)
