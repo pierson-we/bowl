@@ -88,7 +88,7 @@ class train_gen:
 					yield [target_bounding_boxes, target_image, target_scores, metadata], None
 		self.generator = gen(self)
 	def next(self):
-		return next(self.generator())
+		return next(self.generator)
 generator = train_gen(training)
 
 for _ in range(0,10):
