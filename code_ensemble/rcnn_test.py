@@ -64,7 +64,7 @@ training = rcnn_utils.make_json(train_path, img_size)
 
 generator = preprocessing.ObjectDetectionGenerator()
 # generator = preprocessing.ImageSegmentationGenerator()
-generator = generator.flow(training, classes, target_shape=(img_size, img_size), scale=1.0, batch_size=batch_size)
+generator = generator.flow(training, classes, target_shape=(img_size, img_size), scale=1.0, batch_size=batch_size, ox=0, oy=0)
 
 # val_generator = preprocessing.ObjectDetectionGenerator()
 
