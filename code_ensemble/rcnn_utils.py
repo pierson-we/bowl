@@ -91,7 +91,7 @@ def make_json(train_path, img_size): # , test_path, img_size, classes_csv):
         mask = np.reshape(np.array(mask), (img_size, img_size, -1))
         train_dict['objects'] = []
         for box in extract_bboxes(mask):
-            train_dict['object'].append(box)
+            train_dict['objects'].append(box)
         training.append(train_dict)
         # Y_train[i] =  make_2_class(mask) # make_3_class(mask)
         #p_low, p_high = np.percentile(img, (1, 99))
