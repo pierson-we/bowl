@@ -5,6 +5,7 @@ import matplotlib
 import keras
 import json
 import rcnn_utils
+import skimage
 
 train_json_file = '/home/paperspace/bowl/DSB208_train.json'
 # test_json_file = '/home/paperspace/bowl/DSB208_test.json'
