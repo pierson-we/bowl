@@ -111,54 +111,54 @@ generator = iter(train_gen(training))
 
 # generator = generator.flow(training, classes)
 
-for _ in range(0,1):
-	(target_bounding_boxes, target_image, target_scores, meta), _ = next(generator)
+# for _ in range(0,1):
+# 	(target_bounding_boxes, target_image, target_scores, meta), _ = next(generator)
 
-	print(type(target_bounding_boxes))
-	print(target_bounding_boxes.dtype)
-	print(target_bounding_boxes)
-	print(type(target_image))
-	print(target_image.dtype)
-	print(target_image.shape)
-	print(type(target_scores))
-	print(target_scores.dtype)
-	print(target_scores.shape)
-	print(type(meta))
-	print(meta.dtype)
-	print(meta.shape)
-	print(meta)
+# 	print(type(target_bounding_boxes))
+# 	print(target_bounding_boxes.dtype)
+# 	print(target_bounding_boxes)
+# 	print(type(target_image))
+# 	print(target_image.dtype)
+# 	print(target_image.shape)
+# 	print(type(target_scores))
+# 	print(target_scores.dtype)
+# 	print(target_scores.shape)
+# 	print(type(meta))
+# 	print(meta.dtype)
+# 	print(meta.shape)
+# 	print(meta)
 
 	
-	target_bounding_boxes = numpy.squeeze(target_bounding_boxes)
+# 	target_bounding_boxes = numpy.squeeze(target_bounding_boxes)
 
-	target_image = numpy.squeeze(target_image)
+# 	target_image = numpy.squeeze(target_image)
 
-	target_scores = numpy.argmax(target_scores, -1)
+# 	target_scores = numpy.argmax(target_scores, -1)
 
-	target_scores = numpy.squeeze(target_scores)
+# 	target_scores = numpy.squeeze(target_scores)
 	
-	#print(target_bounding_boxes.shape)
-	#print(target_image.shape)
-	#print(target_scores.shape)
+# 	#print(target_bounding_boxes.shape)
+# 	#print(target_image.shape)
+# 	#print(target_scores.shape)
 	
-	_, axis = matplotlib.pyplot.subplots(1, figsize=(12, 8))
+# 	_, axis = matplotlib.pyplot.subplots(1, figsize=(12, 8))
 
-	axis.imshow(target_image)
+# 	axis.imshow(target_image)
 
-	for target_index, target_score in enumerate(target_scores):
-		if target_score > 0:
-			xy = [
-				target_bounding_boxes[target_index][0],
-				target_bounding_boxes[target_index][1]
-			]
-			#print(xy)
-			w = target_bounding_boxes[target_index][2] - target_bounding_boxes[target_index][0]
-			h = target_bounding_boxes[target_index][3] - target_bounding_boxes[target_index][1]
-			rectangle = matplotlib.patches.Rectangle(xy, w, h, edgecolor="r", facecolor="none")
-			#print(xy, w, h)
-			axis.add_patch(rectangle)
+# 	for target_index, target_score in enumerate(target_scores):
+# 		if target_score > 0:
+# 			xy = [
+# 				target_bounding_boxes[target_index][0],
+# 				target_bounding_boxes[target_index][1]
+# 			]
+# 			#print(xy)
+# 			w = target_bounding_boxes[target_index][2] - target_bounding_boxes[target_index][0]
+# 			h = target_bounding_boxes[target_index][3] - target_bounding_boxes[target_index][1]
+# 			rectangle = matplotlib.patches.Rectangle(xy, w, h, edgecolor="r", facecolor="none")
+# 			#print(xy, w, h)
+# 			axis.add_patch(rectangle)
 
-	matplotlib.pyplot.show()
+# 	matplotlib.pyplot.show()
 
 # sys.exit()
 
