@@ -55,8 +55,8 @@ classes = {
 
 training = rcnn_utils.make_json(train_path, img_size)
 
-with open(train_json_file, 'w') as file:
-	json.dump(training, file)
+# with open(train_json_file, 'w') as file:
+# 	json.dump(training, file)
 
 # with open(test_json_file, 'w') as file:
 # 	json.dump(test, file)
