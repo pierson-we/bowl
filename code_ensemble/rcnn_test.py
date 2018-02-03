@@ -78,16 +78,17 @@ print('loading data...')
 class train_gen:
 	def __init__(self, training):
 		self.training = training
-	def gen(self):
-		while True:
-			for item in training:
-				target_image = skimage.io.imread(item['filename'])[:,:,:3]
-				target_bounding_boxes = item['boxes']
-				target_scores = item['class']
-				metadata = numpy.array([[target_image.shape[1], target_image.shape[0], 1.0]])
-				yield [target_bounding_boxes, target_image, target_scores, metadata], None
+		def gen(self):
+			while True:
+				for item in self.training:
+					target_image = skimage.io.imread(item['filename'])[:,:,:3]
+					target_bounding_boxes = item['boxes']
+					target_scores = item['class']
+					metadata = numpy.array([[target_image.shape[1], target_image.shape[0], 1.0]])
+					yield [target_bounding_boxes, target_image, target_scores, metadata], None
+		self.generator = self.gen()
 	def next(self):
-		return next(self.gen())
+		return next(self.generator())
 generator = train_gen(training)
 
 for _ in range(0,10):
