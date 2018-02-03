@@ -72,6 +72,7 @@ generator = generator.flow(training, classes, target_shape=(img_size, img_size),
 
 
 for x in range(0, 5):
+	print('loading one image')
 	(target_bounding_boxes, target_image, target_scores, _), _ = generator.next()
 	print('loaded one image')
 	target_bounding_boxes = numpy.squeeze(target_bounding_boxes)
