@@ -84,7 +84,7 @@ class train_gen:
 				target_image = numpy.expand_dims(skimage.io.imread(item['filename'])[:,:,:3], 0).astype(keras.backend.floatx())
 				target_bounding_boxes = numpy.expand_dims(item['boxes'], 0).astype(keras.backend.floatx())
 				target_scores = numpy.expand_dims(item['class'], 0).astype(numpy.uint8)
-				print(target_scores.shape)
+				#print(target_scores.shape)
 				metadata = numpy.array([[target_image.shape[1], target_image.shape[0], 1.0]])
 				#print(metadata.shape)
 				yield [target_bounding_boxes, target_image, target_scores, metadata], None
@@ -92,39 +92,39 @@ class train_gen:
 		return next(self.generator)
 generator = iter(train_gen(training))
 
-# for _ in range(0,10):
-# 	(target_bounding_boxes, target_image, target_scores, _), _ = generator.next()
+for _ in range(0,3):
+	(target_bounding_boxes, target_image, target_scores, _), _ = generator.next()
 	
-# 	target_bounding_boxes = numpy.squeeze(target_bounding_boxes)
+	target_bounding_boxes = numpy.squeeze(target_bounding_boxes)
 
-# 	target_image = numpy.squeeze(target_image)
+	target_image = numpy.squeeze(target_image)
 
-# 	target_scores = numpy.argmax(target_scores, -1)
+	target_scores = numpy.argmax(target_scores, -1)
 
-# 	target_scores = numpy.squeeze(target_scores)
+	target_scores = numpy.squeeze(target_scores)
 	
-# 	#print(target_bounding_boxes.shape)
-# 	#print(target_image.shape)
-# 	#print(target_scores.shape)
+	#print(target_bounding_boxes.shape)
+	#print(target_image.shape)
+	#print(target_scores.shape)
 	
-# 	_, axis = matplotlib.pyplot.subplots(1, figsize=(12, 8))
+	_, axis = matplotlib.pyplot.subplots(1, figsize=(12, 8))
 
-# 	axis.imshow(target_image)
+	axis.imshow(target_image)
 
-# 	for target_index, target_score in enumerate(target_scores):
-# 		if target_score > 0:
-# 			xy = [
-# 				target_bounding_boxes[target_index][0],
-# 				target_bounding_boxes[target_index][1]
-# 			]
-# 			print(xy)
-# 			w = target_bounding_boxes[target_index][2] - target_bounding_boxes[target_index][0]
-# 			h = target_bounding_boxes[target_index][3] - target_bounding_boxes[target_index][1]
-# 			rectangle = matplotlib.patches.Rectangle(xy, w, h, edgecolor="r", facecolor="none")
-# 			#print(xy, w, h)
-# 			axis.add_patch(rectangle)
+	for target_index, target_score in enumerate(target_scores):
+		if target_score > 0:
+			xy = [
+				target_bounding_boxes[target_index][0],
+				target_bounding_boxes[target_index][1]
+			]
+			print(xy)
+			w = target_bounding_boxes[target_index][2] - target_bounding_boxes[target_index][0]
+			h = target_bounding_boxes[target_index][3] - target_bounding_boxes[target_index][1]
+			rectangle = matplotlib.patches.Rectangle(xy, w, h, edgecolor="r", facecolor="none")
+			#print(xy, w, h)
+			axis.add_patch(rectangle)
 
-# 	matplotlib.pyplot.show()
+	matplotlib.pyplot.show()
 
 
 
