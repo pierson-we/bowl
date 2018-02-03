@@ -223,42 +223,42 @@ def clean_img(x):
     # return opening(closing(x, disk(1)), disk(3))
     return x
 
-from crf import crf
-def format_preds(Y_train, test_img_df):
-    # test_img_df = crf(Y_train, test_img_df)
-    test_img_df = test_img_df.apply(resize_masks, axis=1)
-    test_img_df['rles'] = test_img_df['masks_resized'].map(clean_img).map(lambda x: list(prob_to_rles(x)))
-    print(test_img_df.head())
-    global out_pred_list
-    out_pred_list = []
-    test_img_df.columns
-    def create_out_pred_list(row):
-        global out_pred_list
-        for c_rle in row['rles']:
-            out_pred_list+=[{'ImageId': row['ImageID'], 
-                                 'EncodedPixels': ' '.join(np.array(c_rle).astype(str))}]
-    test_img_df.apply(create_out_pred_list, axis=1)
-    out_pred_df = pd.DataFrame(out_pred_list)
-    print(out_pred_df.shape[0], 'regions found for', test_img_df.shape[0], 'images')
-    # out_pred_df.sample(3)
-    # n_img = 3
-    # for i in range(0,10):   
-    #     fig, m_axs = plt.subplots(3, n_img, figsize = (12, 6))
-    #     for (_, d_row), (c_im, c_lab, c_clean) in zip(test_img_df.sample(n_img).iterrows(), m_axs):
-    #         c_im.imshow(d_row['images'])
-    #         c_im.axis('off')
-    #         c_im.set_title('Microscope')
+# from crf import crf
+# def format_preds(Y_train, test_img_df):
+#     # test_img_df = crf(Y_train, test_img_df)
+#     test_img_df = test_img_df.apply(resize_masks, axis=1)
+#     test_img_df['rles'] = test_img_df['masks_resized'].map(clean_img).map(lambda x: list(prob_to_rles(x)))
+#     print(test_img_df.head())
+#     global out_pred_list
+#     out_pred_list = []
+#     test_img_df.columns
+#     def create_out_pred_list(row):
+#         global out_pred_list
+#         for c_rle in row['rles']:
+#             out_pred_list+=[{'ImageId': row['ImageID'], 
+#                                  'EncodedPixels': ' '.join(np.array(c_rle).astype(str))}]
+#     test_img_df.apply(create_out_pred_list, axis=1)
+#     out_pred_df = pd.DataFrame(out_pred_list)
+#     print(out_pred_df.shape[0], 'regions found for', test_img_df.shape[0], 'images')
+#     # out_pred_df.sample(3)
+#     # n_img = 3
+#     # for i in range(0,10):   
+#     #     fig, m_axs = plt.subplots(3, n_img, figsize = (12, 6))
+#     #     for (_, d_row), (c_im, c_lab, c_clean) in zip(test_img_df.sample(n_img).iterrows(), m_axs):
+#     #         c_im.imshow(d_row['images'])
+#     #         c_im.axis('off')
+#     #         c_im.set_title('Microscope')
             
-    #         c_lab.imshow(d_row['masks'])
-    #         c_lab.axis('off')
-    #         c_lab.set_title('Predicted Raw')
+#     #         c_lab.imshow(d_row['masks'])
+#     #         c_lab.axis('off')
+#     #         c_lab.set_title('Predicted Raw')
             
-    #         c_clean.imshow(clean_img(d_row['masks_resized']))
-    #         c_clean.axis('off')
-    #         c_clean.set_title('Clean')
-    #     plt.show()
+#     #         c_clean.imshow(clean_img(d_row['masks_resized']))
+#     #         c_clean.axis('off')
+#     #         c_clean.set_title('Clean')
+#     #     plt.show()
 
-    return test_img_df, out_pred_df
+#     return test_img_df, out_pred_df
 
 def masks_1_class(mask_multiclass, test_img):
     mask = mask_multiclass[:,:,img_class]
