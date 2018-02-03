@@ -83,9 +83,9 @@ class train_gen:
 			for item in self.training:
 				target_image = numpy.expand_dims(skimage.io.imread(item['filename']), 0).astype(keras.backend.floatx())
 				target_bounding_boxes = numpy.expand_dims(item['boxes'], 0).astype(keras.backend.floatx())
-				target_bounding_boxes = numpy.reshape(target_bounding_boxes, (-1, 0, 4))
+				#target_bounding_boxes = numpy.reshape(target_bounding_boxes, (-1, 0, 4))
 				target_scores = numpy.expand_dims(item['class'], 0).astype(numpy.uint8)
-				target_scores = numpy.reshape(target_scores, (-1, 0, 2))
+				#target_scores = numpy.reshape(target_scores, (-1, 0, 2))
 				#print(target_scores.shape)
 				metadata = numpy.array([[target_image.shape[1], target_image.shape[0], 1.0]])
 				#print(metadata.shape)
