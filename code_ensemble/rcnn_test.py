@@ -103,7 +103,7 @@ generator = generator.flow(training, classes, target_shape=(img_size, img_size),
 # 	matplotlib.pyplot.show()
 
 print('building model...')
-image = keras.layers.Input((img_size, img_size, 3))
+image = keras.layers.Input((img_size, img_size, 4))
 
 model = keras_rcnn.models.RCNN(image, classes=len(classes) + 1)
 
