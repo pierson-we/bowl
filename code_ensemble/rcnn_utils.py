@@ -77,7 +77,7 @@ def make_json(train_path, img_size): # , test_path, img_size, classes_csv):
         train_dict = {}
         path = train_path + id_
         train_dict['filename'] = path + '/images/' + id_ + '.png'
-        train_dict['shape'] = [img_size, img_size, 4]
+        train_dict['shape'] = (img_size, img_size, 4)
         # img = cv2.imread(path + '/images/' + id_ + '.png')
         # img = cv2.resize(img, (img_size, img_size))
         # X_train[i] = img
