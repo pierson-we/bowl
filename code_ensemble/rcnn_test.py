@@ -53,6 +53,7 @@ classes = {
 # 	del item['image']['pathname']
 # 	del item['objects']
 
+print('loading data...')
 training = rcnn_utils.make_json(train_path, img_size)
 
 # with open(train_json_file, 'w') as file:
@@ -101,6 +102,7 @@ generator = generator.flow(training, classes, target_shape=(img_size, img_size),
 
 # 	matplotlib.pyplot.show()
 
+print('building model...')
 image = keras.layers.Input((img_size, img_size, 3))
 
 model = keras_rcnn.models.RCNN(image, classes=len(classes) + 1)
