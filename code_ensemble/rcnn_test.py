@@ -14,7 +14,7 @@ train_path = '/home/paperspace/bowl/input/stage1_train/'
 img_size=256
 batch_size=1
 
-# training, test = datasets.load_data('DSB2018')
+training, test = datasets.load_data('DSB2018')
 
 # training, validation = sklearn.model_selection.train_test_split(training)
 
@@ -22,8 +22,8 @@ classes = {
     "nucleus": 1
 }
 
-with open(train_json_file, 'r') as file:
-	training = json.loads(file.read())
+# with open(train_json_file, 'r') as file:
+# 	training = json.loads(file.read())
 
 # with open(test_json_file, 'r') as file:
 # 	test = json.loads(file.read())
@@ -32,27 +32,27 @@ with open(train_json_file, 'r') as file:
 # print(training[0])
 # print(training[0].keys())
 
-# for item in test:
-# 	item['shape'] = (item['image']['shape']['r'], item['image']['shape']['c'], item['image']['shape']['channels'])
-# 	item['filename'] = item['image']['pathname']
-# 	del item['image']['shape']
-# 	del item['image']['pathname']
+for item in test:
+	item['shape'] = (item['image']['shape']['r'], item['image']['shape']['c'], item['image']['shape']['channels'])
+	item['filename'] = item['image']['pathname']
+	#del item['image']['shape']
+	#del item['image']['pathname']
 
-# for item in training:
-# 	del item['image']
-# 	item['shape'] = (item['image']['shape']['r'], item['image']['shape']['c'], item['image']['shape']['channels'])
-# 	item['filename'] = item['image']['pathname']
-# 	item['boxes'] = []
-# 	for x in item['objects']:
-# 		item['boxes'].append({})
-# 		item['boxes'][-1]['class'] = x['class']
-# 		item['boxes'][-1]['x1'] = x['bounding_box']['minimum']['c']
-# 		item['boxes'][-1]['x2'] = x['bounding_box']['maximum']['c']
-# 		item['boxes'][-1]['y1'] = x['bounding_box']['minimum']['r']
-# 		item['boxes'][-1]['y2'] = x['bounding_box']['maximum']['r']
-# 	del item['image']['shape']
-# 	del item['image']['pathname']
-# 	del item['objects']
+for item in training:
+	#del item['image']
+	item['shape'] = (item['image']['shape']['r'], item['image']['shape']['c'], item['image']['shape']['channels'])
+	item['filename'] = item['image']['pathname']
+	item['boxes'] = []
+	for x in item['objects']:
+		item['boxes'].append({})
+		item['boxes'][-1]['class'] = x['class']
+		item['boxes'][-1]['x1'] = x['bounding_box']['minimum']['c']
+		item['boxes'][-1]['x2'] = x['bounding_box']['maximum']['c']
+		item['boxes'][-1]['y1'] = x['bounding_box']['minimum']['r']
+		item['boxes'][-1]['y2'] = x['bounding_box']['maximum']['r']
+	#del item['image']['shape']
+	#del item['image']['pathname']
+	#del item['objects']
 
 print('loading data...')
 # training = rcnn_utils.make_json(train_path, img_size)
@@ -63,9 +63,9 @@ print('loading data...')
 # with open(test_json_file, 'w') as file:
 # 	json.dump(test, file)
 
-generator = preprocessing.ObjectDetectionGenerator()
+# generator = preprocessing.ObjectDetectionGenerator()
 # generator = preprocessing.ImageSegmentationGenerator()
-generator = generator.flow(training, classes, target_shape=(img_size, img_size), scale=1.0, batch_size=batch_size, ox=0, oy=0)
+# generator = generator.flow(training, classes, target_shape=(img_size, img_size), scale=1.0, batch_size=batch_size, ox=0, oy=0)
 
 # val_generator = preprocessing.ObjectDetectionGenerator()
 
