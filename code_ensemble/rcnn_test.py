@@ -89,7 +89,7 @@ class train_gen:
 		self.generator = gen(self)
 	def next(self):
 		return next(self.generator)
-generator = train_gen(training)
+generator = iter(train_gen(training))
 
 # for _ in range(0,10):
 # 	(target_bounding_boxes, target_image, target_scores, _), _ = generator.next()
