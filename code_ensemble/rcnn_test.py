@@ -81,7 +81,7 @@ class train_gen:
 	def __iter__(self):
 		while True:
 			for item in self.training:
-				target_image = numpy.expand_dims(skimage.io.imread(item['filename'])[:,:,1:], 0).astype(keras.backend.floatx())
+				target_image = numpy.expand_dims(skimage.io.imread(item['filename']), 0).astype(keras.backend.floatx())
 				target_bounding_boxes = numpy.expand_dims(item['boxes'], 0).astype(keras.backend.floatx())
 				target_scores = numpy.expand_dims(item['class'], 0).astype(numpy.uint8)
 				#print(target_scores.shape)
