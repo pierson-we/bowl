@@ -226,6 +226,8 @@ output_anchors = numpy.squeeze(output_anchors)
 # output_proposals = numpy.squeeze(output_proposals)
 # output_deltas = numpy.squeeze(output_deltas)
 output_scores = numpy.squeeze(output_scores)
+print(output_anchors)
+print(output_scores)
 _, axis = matplotlib.pyplot.subplots(1)
 axis.imshow(target_image)
 for index, label in enumerate(target_labels):
