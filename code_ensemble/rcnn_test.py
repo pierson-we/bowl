@@ -92,8 +92,8 @@ for i in range(0, 5):
 
 	#for target_index, target_score in enumerate(target_scores):
 	for box in target_bounding_boxes:
-	    #if target_score > 0:
-	    target_score = box['class']
+		#if target_score > 0:
+		target_score = box['class']
 		xy = [
 			box['x1'],
 			box['y1']
