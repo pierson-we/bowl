@@ -41,7 +41,7 @@ def extract_bboxes(mask):
             # No mask for this instance. Might happen due to
             # resizing or cropping. Set bbox to zeros
             x1, x2, y1, y2 = 0, 0, 0, 0
-        boxes[i] = {'class': 1, 'y1': y1, 'x1': x1, 'y2': y2, 'x2': x2})
+        boxes[i] = {'class': 1, 'y1': y1, 'x1': x1, 'y2': y2, 'x2': x2}
     return boxes
 
 def make_borders(img):
