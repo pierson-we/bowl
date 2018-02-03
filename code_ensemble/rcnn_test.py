@@ -85,8 +85,7 @@ class train_gen:
 				target_bounding_boxes = numpy.expand_dims(item['boxes'], 0)
 				target_scores = numpy.expand_dims(item['class'], 0)
 				#print(target_scores.shape)
-				metadata = numpy.expand_dims(numpy.array([[target_image.shape[1], 
-									   target_image.shape[0], 1.0]]), 0)
+				metadata = numpy.array([[target_image.shape[1], target_image.shape[0], 1.0]])
 				#print(metadata.shape)
 				yield [target_bounding_boxes, target_image, target_scores, metadata], None
 	def next(self):
