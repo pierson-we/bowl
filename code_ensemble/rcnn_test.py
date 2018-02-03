@@ -59,8 +59,8 @@ for item in training:
 		# item['boxes'].append([x['bounding_box']['minimum']['c'], x['bounding_box']['minimum']['r'], 
 		# 			 x['bounding_box']['maximum']['c'], x['bounding_box']['maximum']['r']])
 		
-	item['boxes'] = numpy.array(item['boxes'])
-	item['class'] = numpy.array([[0,1] for x in range(len(item['boxes']))])
+# 	item['boxes'] = numpy.array(item['boxes'])
+# 	item['class'] = numpy.array([[0,1] for x in range(len(item['boxes']))])
 
 print('loading data...')
 # training = rcnn_utils.make_json(train_path, img_size)
