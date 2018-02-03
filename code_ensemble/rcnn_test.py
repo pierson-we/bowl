@@ -176,7 +176,7 @@ model = keras_rcnn.models.RCNN(image, classes=len(classes) + 1)
 optimizer = keras.optimizers.Adam(0.0001)
 
 model.compile(optimizer)
-
+model.summary()
 model.fit_generator(generator, epochs=1, steps_per_epoch=len(training))
 
 # visualize prediction
