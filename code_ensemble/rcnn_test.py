@@ -7,7 +7,7 @@ import json
 
 train_json_file = '/home/paperspace/bowl/DSB208_train.json'
 test_json_file = '/home/paperspace/bowl/DSB208_test.json'
-img_size=None
+img_size=256
 batch_size=1
 
 # training, test = datasets.load_data('DSB2018')
@@ -34,8 +34,8 @@ with open(test_json_file, 'r') as file:
 # 	del item['image']['shape']
 # 	del item['image']['pathname']
 
-for item in training:
-	del item['image']
+# for item in training:
+# 	del item['image']
 # 	item['shape'] = (item['image']['shape']['r'], item['image']['shape']['c'], item['image']['shape']['channels'])
 # 	item['filename'] = item['image']['pathname']
 # 	item['boxes'] = []
@@ -59,7 +59,7 @@ for item in training:
 
 generator = preprocessing.ObjectDetectionGenerator()
 # generator = preprocessing.ImageSegmentationGenerator()
-generator = generator.flow(training, classes) #, target_shape=(img_size, img_size), scale=1.0, batch_size=batch_size)
+generator = generator.flow(training, classes, target_shape=(img_size, img_size), scale=1.0, batch_size=batch_size)
 
 # val_generator = preprocessing.ObjectDetectionGenerator()
 
