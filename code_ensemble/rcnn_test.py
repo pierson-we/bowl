@@ -86,9 +86,7 @@ generator = train_gen(training)
 
 for _ in range(0,10):
 	(target_bounding_boxes, target_image, target_scores) = next(generator)
-	print(target_bounding_boxes.shape)
-	print(target_image.shape)
-	print(target_scores.shape)
+	
 	target_bounding_boxes = numpy.squeeze(target_bounding_boxes)
 
 	target_image = numpy.squeeze(target_image)
@@ -96,7 +94,11 @@ for _ in range(0,10):
 	target_scores = numpy.argmax(target_scores, -1)
 
 	target_scores = numpy.squeeze(target_scores)
-
+	
+	print(target_bounding_boxes.shape)
+	print(target_image.shape)
+	print(target_scores.shape)
+	
 	_, axis = matplotlib.pyplot.subplots(1, figsize=(12, 8))
 
 	axis.imshow(target_image)
