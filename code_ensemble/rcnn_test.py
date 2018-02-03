@@ -102,9 +102,9 @@ for _ in range(0,10):
 
 	target_scores = numpy.squeeze(target_scores)
 	
-	print(target_bounding_boxes.shape)
-	print(target_image.shape)
-	print(target_scores.shape)
+	#print(target_bounding_boxes.shape)
+	#print(target_image.shape)
+	#print(target_scores.shape)
 	
 	_, axis = matplotlib.pyplot.subplots(1, figsize=(12, 8))
 
@@ -120,7 +120,7 @@ for _ in range(0,10):
 			w = target_bounding_boxes[target_index][2] - target_bounding_boxes[target_index][0]
 			h = target_bounding_boxes[target_index][3] - target_bounding_boxes[target_index][1]
 			rectangle = matplotlib.patches.Rectangle(xy, w, h, edgecolor="r", facecolor="none")
-			print(xy, w, h)
+			#print(xy, w, h)
 			axis.add_patch(rectangle)
 
 	matplotlib.pyplot.show()
