@@ -75,17 +75,23 @@ print('loading data...')
 
 # val_generator = generator.flow(validation, classes, target_shape=(img_size, img_size), scale=1.0, batch_size=batch_size)
 
-def train_gen(training):
-	while True:
-		for item in training:
-			target_image = skimage.io.imread(item['filename'])[:,:,:3]
-			target_bounding_boxes = item['boxes']
-			target_scores = item['class']
-			yield target_bounding_boxes, target_image, target_scores
+class train_gen:
+	def __init__(self, training):
+		self.training = training
+	def gen(self):
+		while True:
+			for item in training:
+				target_image = skimage.io.imread(item['filename'])[:,:,:3]
+				target_bounding_boxes = item['boxes']
+				target_scores = item['class']
+				metadata = numpy.array([[target_image.shape[1], target_image.shape[0], 1.0]])
+				yield [target_bounding_boxes, target_image, target_scores, metadata], None
+	def next(self):
+		return next(self.gen())
 generator = train_gen(training)
 
 for _ in range(0,10):
-	(target_bounding_boxes, target_image, target_scores) = next(generator)
+	(target_bounding_boxes, target_image, target_scores) = generator.next()
 	
 	target_bounding_boxes = numpy.squeeze(target_bounding_boxes)
 
