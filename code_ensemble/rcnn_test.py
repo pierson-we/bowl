@@ -71,31 +71,36 @@ generator = generator.flow(training, classes, target_shape=(img_size, img_size),
 # val_generator = generator.flow(validation, classes, target_shape=(img_size, img_size), scale=1.0, batch_size=batch_size)
 
 
-for x in range(0, 5):
-	print('loading one image')
-	(target_bounding_boxes, target_image, target_scores, _), _ = generator.next()
-	print('loaded one image')
-	target_bounding_boxes = numpy.squeeze(target_bounding_boxes)
+for i in range(0, 5):
+	target_image = skimage.io.imread(training[i]['filename'])[:,:,:3]
+	target_bounding_boxes = training[i]['boxes']
+	
+	#print('loading one image')
+	#(target_bounding_boxes, target_image, target_scores, _), _ = generator.next()
+	#print('loaded one image')
+	#target_bounding_boxes = numpy.squeeze(target_bounding_boxes)
 
-	target_image = numpy.squeeze(target_image)
+	#target_image = numpy.squeeze(target_image)
 
-	target_scores = numpy.argmax(target_scores, -1)
+	# target_scores = numpy.argmax(target_scores, -1)
 
-	target_scores = numpy.squeeze(target_scores)
+	# target_scores = numpy.squeeze(target_scores)
 
 	_, axis = matplotlib.pyplot.subplots(1, figsize=(12, 8))
 
 	axis.imshow(target_image)
 
-	for target_index, target_score in enumerate(target_scores):
-	    if target_score > 0:
+	#for target_index, target_score in enumerate(target_scores):
+	for box in target_bounding_boxes:
+	    #if target_score > 0:
+	    target_score = box['class']
 	        xy = [
-	            target_bounding_boxes[target_index][0],
-	            target_bounding_boxes[target_index][1]
+	            box['x1'],
+	            box['y1']
 	        ]
 
-	        w = target_bounding_boxes[target_index][2] - target_bounding_boxes[target_index][0]
-	        h = target_bounding_boxes[target_index][3] - target_bounding_boxes[target_index][1]
+	        w = box['x2'] - box['x1']
+	        h = box['y2'] - box['y1']
 
 	        rectangle = matplotlib.patches.Rectangle(xy, w, h, edgecolor="r", facecolor="none")
 
