@@ -44,10 +44,10 @@ for item in training:
 	item['filename'] = item['image']['pathname']
 	item['boxes'] = []
 	for x in item['objects']:
-		item['boxes'].append({})
+		#item['boxes'].append({})
 		#item['boxes'][-1]['class'] = x['class']
-		item['boxes'][-1] = [x['bounding_box']['minimum']['c'], x['bounding_box']['minimum']['r'], 
-					 x['bounding_box']['maximum']['c'], x['bounding_box']['maximum']['r']]
+		item['boxes'].append([x['bounding_box']['minimum']['c'], x['bounding_box']['minimum']['r'], 
+					 x['bounding_box']['maximum']['c'], x['bounding_box']['maximum']['r']])
 		#item['boxes'][-1]['x1'] = x['bounding_box']['minimum']['c']
 		#item['boxes'][-1]['x2'] = x['bounding_box']['maximum']['c']
 		#item['boxes'][-1]['y1'] = x['bounding_box']['minimum']['r']
@@ -83,7 +83,9 @@ class train_gen:
 			for item in self.training:
 				target_image = numpy.expand_dims(skimage.io.imread(item['filename']), 0).astype(keras.backend.floatx())
 				target_bounding_boxes = numpy.expand_dims(item['boxes'], 0).astype(keras.backend.floatx())
+				target_bounding_boxes = numpy.reshape(target_bounding_boxes, (-1, 0, 4))
 				target_scores = numpy.expand_dims(item['class'], 0).astype(numpy.uint8)
+				target_scores = numpy.reshape(target_scores, (-1, 0, 2))
 				#print(target_scores.shape)
 				metadata = numpy.array([[target_image.shape[1], target_image.shape[0], 1.0]])
 				#print(metadata.shape)
