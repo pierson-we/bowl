@@ -93,7 +93,7 @@ class train_gen:
 generator = iter(train_gen(training))
 
 for _ in range(0,3):
-	(target_bounding_boxes, target_image, target_scores, _), _ = generator.next()
+	(target_bounding_boxes, target_image, target_scores, _), _ = next(generator)
 	
 	target_bounding_boxes = numpy.squeeze(target_bounding_boxes)
 
