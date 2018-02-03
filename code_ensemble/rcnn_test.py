@@ -244,7 +244,7 @@ for i in range(0, 10):
 			rectangle = matplotlib.patches.Rectangle(xy, w, h, edgecolor="g", facecolor="none")
 			axis.add_patch(rectangle)
 	for index, score in enumerate(output_scores):
-		if score[1] > 0.25:
+		if score[1] > 0.95:
 			xy = [
 			output_anchors[index][0],
 			output_anchors[index][1]
