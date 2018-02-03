@@ -101,17 +101,17 @@ for _ in range(0,10):
 
 	for target_index, target_score in enumerate(target_scores):
 		if target_score > 0:
-		xy = [
-			target_bounding_boxes[target_index][0],
-			target_bounding_boxes[target_index][1]
-		]
+			xy = [
+				target_bounding_boxes[target_index][0],
+				target_bounding_boxes[target_index][1]
+			]
 
-		w = target_bounding_boxes[target_index][2] - target_bounding_boxes[target_index][0]
-		h = target_bounding_boxes[target_index][3] - target_bounding_boxes[target_index][1]
+			w = target_bounding_boxes[target_index][2] - target_bounding_boxes[target_index][0]
+			h = target_bounding_boxes[target_index][3] - target_bounding_boxes[target_index][1]
 
-		rectangle = matplotlib.patches.Rectangle(xy, w, h, edgecolor="r", facecolor="none")
+			rectangle = matplotlib.patches.Rectangle(xy, w, h, edgecolor="r", facecolor="none")
 
-		axis.add_patch(rectangle)
+			axis.add_patch(rectangle)
 
 	matplotlib.pyplot.show()
 
