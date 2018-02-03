@@ -169,7 +169,7 @@ generator = iter(train_gen(training))
 # 	matplotlib.pyplot.show()
 
 print('building model...')
-image = keras.layers.Input((img_size, img_size, 4))
+image = keras.layers.Input((img_size, img_size, 3))
 
 model = keras_rcnn.models.RCNN(image, classes=len(classes) + 1)
 
