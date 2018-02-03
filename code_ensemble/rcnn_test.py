@@ -23,7 +23,7 @@ classes = {
 }
 
 with open(train_json_file, 'r') as file:
-	training = json.load(file.read())
+	training = json.loads(file.read())
 
 # with open(test_json_file, 'r') as file:
 # 	test = json.loads(file.read())
