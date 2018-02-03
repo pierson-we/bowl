@@ -46,12 +46,13 @@ for item in training:
 	for x in item['objects']:
 		item['boxes'].append({})
 		#item['boxes'][-1]['class'] = x['class']
-		item['boxes'][-1] = (x['bounding_box']['minimum']['c'], x['bounding_box']['minimum']['r'], 
-				     x['bounding_box']['maximum']['c'], x['bounding_box']['maximum']['r'])
+		item['boxes'][-1] = [x['bounding_box']['minimum']['c'], x['bounding_box']['minimum']['r'], 
+				     x['bounding_box']['maximum']['c'], x['bounding_box']['maximum']['r']
 		#item['boxes'][-1]['x1'] = x['bounding_box']['minimum']['c']
 		#item['boxes'][-1]['x2'] = x['bounding_box']['maximum']['c']
 		#item['boxes'][-1]['y1'] = x['bounding_box']['minimum']['r']
 		#item['boxes'][-1]['y2'] = x['bounding_box']['maximum']['r']
+        item['boxes'] = numpy.array(item['boxes'])
 	item['class'] = numpy.array([[1] for x in range(len(item['boxes']))])
 	#del item['image']['shape']
 	#del item['image']['pathname']
