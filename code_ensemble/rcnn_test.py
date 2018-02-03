@@ -211,7 +211,7 @@ optimizer = keras.optimizers.Adam(0.0001)
 
 model.compile(optimizer)
 model.summary(line_length=150)
-model.fit_generator(generator, epochs=1, steps_per_epoch=len(training)/10)
+model.fit_generator(generator, epochs=1, steps_per_epoch=len(training))
 
 # visualize prediction
 example, _ = next(generator)
@@ -241,7 +241,7 @@ for index, label in enumerate(target_labels):
 		rectangle = matplotlib.patches.Rectangle(xy, w, h, edgecolor="g", facecolor="none")
 		axis.add_patch(rectangle)
 for index, score in enumerate(output_scores):
-	if score > 0.95:
+	if score[1] > 0.75:
 		xy = [
 		output_anchors[index][0],
 		output_anchors[index][1]
