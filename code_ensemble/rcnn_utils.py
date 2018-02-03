@@ -25,7 +25,7 @@ def extract_bboxes(mask):
     mask: [height, width, num_instances]. Mask pixels are either 1 or 0.
     Returns: bbox array [num_instances, (y1, x1, y2, x2)].
     """
-    boxes = np.zeros([mask.shape[-1], 4], dtype=np.int32)
+    boxes = []
     for i in range(mask.shape[-1]):
         m = mask[:, :, i]
         # Bounding box.
@@ -41,7 +41,7 @@ def extract_bboxes(mask):
             # No mask for this instance. Might happen due to
             # resizing or cropping. Set bbox to zeros
             x1, x2, y1, y2 = 0, 0, 0, 0
-        boxes[i] = {'class': 1, 'y1': y1, 'x1': x1, 'y2': y2, 'x2': x2}
+        boxes.append({'class': 1, 'y1': y1, 'x1': x1, 'y2': y2, 'x2': x2})
     return boxes
 
 def make_borders(img):
