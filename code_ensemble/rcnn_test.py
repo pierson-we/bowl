@@ -176,7 +176,7 @@ optimizer = keras.optimizers.Adam(0.0001)
 
 model.compile(optimizer)
 
-model.fit_generator(generator, epochs=1, steps_per_epoch=len(training), batch_size=batch_size)
+model.fit_generator(generator, epochs=1, steps_per_epoch=len(training))
 
 # visualize prediction
 example, _ = generator.next()
