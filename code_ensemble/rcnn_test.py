@@ -53,7 +53,7 @@ for item in training:
 		#item['boxes'][-1]['y1'] = x['bounding_box']['minimum']['r']
 		#item['boxes'][-1]['y2'] = x['bounding_box']['maximum']['r']
 	item['boxes'] = numpy.array(item['boxes'])
-	item['class'] = numpy.array([[1] for x in range(len(item['boxes']))])
+	item['class'] = numpy.array([[0,1] for x in range(len(item['boxes']))])
 	#del item['image']['shape']
 	#del item['image']['pathname']
 	#del item['objects']
