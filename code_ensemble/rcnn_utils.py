@@ -65,7 +65,7 @@ def format_mask(mask, img, _id, num_classes):
     mask_multiclass[:,:,int(img_class+(num_classes/2))] = bg
     return mask_multiclass
 
-def make_json(train_path): # , test_path, img_size, classes_csv):
+def make_json(train_path, img_size): # , test_path, img_size, classes_csv):
     # class_df = pd.read_csv(classes_csv, header=0, index_col='_id')
     # num_classes = len(class_df.classes.unique().tolist()) * 2
     num_classes = 1
