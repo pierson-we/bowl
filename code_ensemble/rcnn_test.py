@@ -94,17 +94,17 @@ for i in range(0, 5):
 	for box in target_bounding_boxes:
 	    #if target_score > 0:
 	    target_score = box['class']
-	        xy = [
-	            box['x1'],
-	            box['y1']
-	        ]
+		xy = [
+			box['x1'],
+			box['y1']
+		]
 
-	        w = box['x2'] - box['x1']
-	        h = box['y2'] - box['y1']
+		w = box['x2'] - box['x1']
+		h = box['y2'] - box['y1']
 
-	        rectangle = matplotlib.patches.Rectangle(xy, w, h, edgecolor="r", facecolor="none")
+		rectangle = matplotlib.patches.Rectangle(xy, w, h, edgecolor="r", facecolor="none")
 
-	        axis.add_patch(rectangle)
+		axis.add_patch(rectangle)
 
 	matplotlib.pyplot.show()
 
