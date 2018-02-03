@@ -45,11 +45,14 @@ for item in training:
 	item['boxes'] = []
 	for x in item['objects']:
 		item['boxes'].append({})
-		item['boxes'][-1]['class'] = x['class']
-		item['boxes'][-1]['x1'] = x['bounding_box']['minimum']['c']
-		item['boxes'][-1]['x2'] = x['bounding_box']['maximum']['c']
-		item['boxes'][-1]['y1'] = x['bounding_box']['minimum']['r']
-		item['boxes'][-1]['y2'] = x['bounding_box']['maximum']['r']
+		#item['boxes'][-1]['class'] = x['class']
+		item['boxes'][-1] = (x['bounding_box']['minimum']['c'], x['bounding_box']['minimum']['r'], 
+				     x['bounding_box']['maximum']['c'], x['bounding_box']['maximum']['r'])
+		#item['boxes'][-1]['x1'] = x['bounding_box']['minimum']['c']
+		#item['boxes'][-1]['x2'] = x['bounding_box']['maximum']['c']
+		#item['boxes'][-1]['y1'] = x['bounding_box']['minimum']['r']
+		#item['boxes'][-1]['y2'] = x['bounding_box']['maximum']['r']
+	item['class'] = [1 for x in range(len(item['boxes']))]
 	#del item['image']['shape']
 	#del item['image']['pathname']
 	#del item['objects']
@@ -71,43 +74,87 @@ print('loading data...')
 
 # val_generator = generator.flow(validation, classes, target_shape=(img_size, img_size), scale=1.0, batch_size=batch_size)
 
+def train_gen(training):
+	while True:
+		for item in training:
+			target_image = skimage.io.imread(item['filename'])[:,:,:3]
+			target_bounding_boxes = item['boxes']
+			target_scores = item['class']
+			yield target_bounding_boxes, target_image, target_scores
+generator = train_gen(training)
 
-for i in range(0, 5):
-	target_image = skimage.io.imread(training[i]['filename'])[:,:,:3]
-	target_bounding_boxes = training[i]['boxes']
-	
-	#print('loading one image')
-	#(target_bounding_boxes, target_image, target_scores, _), _ = generator.next()
-	#print('loaded one image')
-	#target_bounding_boxes = numpy.squeeze(target_bounding_boxes)
 
-	#target_image = numpy.squeeze(target_image)
+(target_bounding_boxes, target_image, target_scores) = generator.next()
 
-	# target_scores = numpy.argmax(target_scores, -1)
+target_bounding_boxes = numpy.squeeze(target_bounding_boxes)
 
-	# target_scores = numpy.squeeze(target_scores)
+target_image = numpy.squeeze(target_image)
 
-	_, axis = matplotlib.pyplot.subplots(1, figsize=(12, 8))
+target_scores = numpy.argmax(target_scores, -1)
 
-	axis.imshow(target_image)
+target_scores = numpy.squeeze(target_scores)
 
-	#for target_index, target_score in enumerate(target_scores):
-	for box in target_bounding_boxes:
-		#if target_score > 0:
-		target_score = box['class']
-		xy = [
-			box['x1'],
-			box['y1']
-		]
+_, axis = matplotlib.pyplot.subplots(1, figsize=(12, 8))
 
-		w = box['x2'] - box['x1']
-		h = box['y2'] - box['y1']
+axis.imshow(target_image)
 
-		rectangle = matplotlib.patches.Rectangle(xy, w, h, edgecolor="r", facecolor="none")
+for target_index, target_score in enumerate(target_scores):
+    if target_score > 0:
+        xy = [
+            target_bounding_boxes[target_index][0],
+            target_bounding_boxes[target_index][1]
+        ]
 
-		axis.add_patch(rectangle)
+        w = target_bounding_boxes[target_index][2] - target_bounding_boxes[target_index][0]
+        h = target_bounding_boxes[target_index][3] - target_bounding_boxes[target_index][1]
 
-	matplotlib.pyplot.show()
+        rectangle = matplotlib.patches.Rectangle(xy, w, h, edgecolor="r", facecolor="none")
+
+        axis.add_patch(rectangle)
+
+matplotlib.pyplot.show()
+
+
+
+
+
+
+# for i in range(0, 5):
+# 	target_image = skimage.io.imread(training[i]['filename'])[:,:,:3]
+# 	target_bounding_boxes = training[i]['boxes']
+# 	target_scores = training[i]['class']
+# 	#print('loading one image')
+# 	#(target_bounding_boxes, target_image, target_scores, _), _ = generator.next()
+# 	#print('loaded one image')
+# 	#target_bounding_boxes = numpy.squeeze(target_bounding_boxes)
+
+# 	#target_image = numpy.squeeze(target_image)
+
+# 	# target_scores = numpy.argmax(target_scores, -1)
+
+# 	# target_scores = numpy.squeeze(target_scores)
+
+# 	_, axis = matplotlib.pyplot.subplots(1, figsize=(12, 8))
+
+# 	axis.imshow(target_image)
+
+# 	#for target_index, target_score in enumerate(target_scores):
+# 	for i, box in enumerate(target_bounding_boxes):
+# 		#if target_score > 0:
+# 		target_score = target_scores[i]
+# 		xy = [
+# 			box['x1'],
+# 			box['y1']
+# 		]
+
+# 		w = box['x2'] - box['x1']
+# 		h = box['y2'] - box['y1']
+
+# 		rectangle = matplotlib.patches.Rectangle(xy, w, h, edgecolor="r", facecolor="none")
+
+# 		axis.add_patch(rectangle)
+
+# 	matplotlib.pyplot.show()
 
 print('building model...')
 image = keras.layers.Input((img_size, img_size, 4))
