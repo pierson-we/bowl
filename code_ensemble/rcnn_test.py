@@ -4,8 +4,9 @@ import numpy
 import matplotlib
 import keras
 import json
+import rcnn_utils
 
-# train_json_file = '/home/paperspace/bowl/DSB208_train.json'
+train_json_file = '/home/paperspace/bowl/DSB208_train.json'
 # test_json_file = '/home/paperspace/bowl/DSB208_test.json'
 train_path = '/home/paperspace/bowl/input/stage1_train/'
 
@@ -51,15 +52,14 @@ classes = {
 # 	del item['image']['shape']
 # 	del item['image']['pathname']
 # 	del item['objects']
-	
 
-# with open(train_json_file, 'w') as file:
-# 	json.dump(training, file)
+training = rcnn_utils.make_json(train_path, img_size)
+
+with open(train_json_file, 'w') as file:
+	json.dump(training, file)
 
 # with open(test_json_file, 'w') as file:
 # 	json.dump(test, file)
-
-training = rcnn_utils.make_json(train_path, img_size)
 
 generator = preprocessing.ObjectDetectionGenerator()
 # generator = preprocessing.ImageSegmentationGenerator()
