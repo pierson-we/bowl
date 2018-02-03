@@ -89,7 +89,9 @@ class train_gen:
 				print(target_bounding_boxes.shape)
 				metadata = numpy.array([[target_image.shape[1], target_image.shape[0], 1.0]])
 				#print(metadata.shape)
-				yield [target_bounding_boxes, target_image, target_scores, metadata], None
+				result = [target_bounding_boxes, target_image, target_scores, metadata], None
+				print(result)
+				yield result
 # 	def next(self):
 # 		return next(self.generator)
 generator = iter(train_gen(training))
