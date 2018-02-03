@@ -48,7 +48,7 @@ for item in training:
 		#item['boxes'].append({})
 		#item['boxes'][-1]['class'] = x['class']
 		#item['boxes'].append([x['bounding_box']['minimum']['c'], x['bounding_box']['minimum']['r'], 
-					 x['bounding_box']['maximum']['c'], x['bounding_box']['maximum']['r']])
+		#			 x['bounding_box']['maximum']['c'], x['bounding_box']['maximum']['r']])
 		#item['boxes'][-1]['x1'] = x['bounding_box']['minimum']['c']
 		#item['boxes'][-1]['x2'] = x['bounding_box']['maximum']['c']
 		#item['boxes'][-1]['y1'] = x['bounding_box']['minimum']['r']
