@@ -82,7 +82,7 @@ class train_gen:
 		while True:
 			for item in self.training:
 				target_image = skimage.io.imread(item['filename'])[:,:,:3]
-				target_bounding_boxes = np.expand_dims(item['boxes'], -1)
+				target_bounding_boxes = numpy.expand_dims(item['boxes'], -1)
 				target_scores = item['class']
 				metadata = numpy.array([[target_image.shape[1], target_image.shape[0], 1.0]])
 				yield [target_bounding_boxes, target_image, target_scores, metadata], None
