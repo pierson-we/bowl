@@ -16,12 +16,12 @@ train_path = '/home/paperspace/bowl/input/stage1_train/'
 img_size=256
 batch_size=1
 
-# training, test = datasets.load_data('DSB2018')
+training, test = datasets.load_data('DSB2018')
 
 # training, validation = sklearn.model_selection.train_test_split(training)
 
-with open(train_json_file, 'r') as file:
-	training = json.loads(file.read())
+# with open(train_json_file, 'r') as file:
+# 	training = json.loads(file.read())
 
 # with open(test_json_file, 'r') as file:
 # 	test = json.loads(file.read())
@@ -41,14 +41,14 @@ classes = {
 	#del item['image']['pathname']
 
 for item in training:
-	#item['shape'] = (item['image']['shape']['r'], item['image']['shape']['c'], item['image']['shape']['channels'])
-	#item['filename'] = item['image']['pathname']
-	#item['boxes'] = []
-	#for x in item['objects']:
+	item['shape'] = (item['image']['shape']['r'], item['image']['shape']['c'], item['image']['shape']['channels'])
+	item['filename'] = item['image']['pathname']
+	item['boxes'] = []
+	for x in item['objects']:
 		#item['boxes'].append({})
 		#item['boxes'][-1]['class'] = x['class']
-		#item['boxes'].append([x['bounding_box']['minimum']['c'], x['bounding_box']['minimum']['r'], 
-		#			 x['bounding_box']['maximum']['c'], x['bounding_box']['maximum']['r']])
+		item['boxes'].append([x['bounding_box']['minimum']['c'], x['bounding_box']['minimum']['r'], 
+					 x['bounding_box']['maximum']['c'], x['bounding_box']['maximum']['r']])
 		#item['boxes'][-1]['x1'] = x['bounding_box']['minimum']['c']
 		#item['boxes'][-1]['x2'] = x['bounding_box']['maximum']['c']
 		#item['boxes'][-1]['y1'] = x['bounding_box']['minimum']['r']
@@ -59,15 +59,15 @@ for item in training:
 		# item['boxes'].append([x['bounding_box']['minimum']['c'], x['bounding_box']['minimum']['r'], 
 		# 			 x['bounding_box']['maximum']['c'], x['bounding_box']['maximum']['r']])
 		
-	item['boxes'] = numpy.array(item['boxes'])
-	item['class'] = numpy.array([[0,1] for x in range(len(item['boxes']))])
+# 	item['boxes'] = numpy.array(item['boxes'])
+# 	item['class'] = numpy.array([[0,1] for x in range(len(item['boxes']))])
 
 print('loading data...')
 # training = rcnn_utils.make_json(train_path, img_size)
 
-# with open(train_json_file, 'w') as file:
-# 	json.dump(training, file)
-
+with open(train_json_file, 'w') as file:
+	json.dump(training, file)
+sys.exit()
 # with open(test_json_file, 'w') as file:
 # 	json.dump(test, file)
 
