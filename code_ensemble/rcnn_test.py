@@ -91,39 +91,39 @@ class train_gen:
 		return next(self.generator)
 generator = train_gen(training)
 
-for _ in range(0,10):
-	(target_bounding_boxes, target_image, target_scores, _), _ = generator.next()
+# for _ in range(0,10):
+# 	(target_bounding_boxes, target_image, target_scores, _), _ = generator.next()
 	
-	target_bounding_boxes = numpy.squeeze(target_bounding_boxes)
+# 	target_bounding_boxes = numpy.squeeze(target_bounding_boxes)
 
-	target_image = numpy.squeeze(target_image)
+# 	target_image = numpy.squeeze(target_image)
 
-	target_scores = numpy.argmax(target_scores, -1)
+# 	target_scores = numpy.argmax(target_scores, -1)
 
-	target_scores = numpy.squeeze(target_scores)
+# 	target_scores = numpy.squeeze(target_scores)
 	
-	#print(target_bounding_boxes.shape)
-	#print(target_image.shape)
-	#print(target_scores.shape)
+# 	#print(target_bounding_boxes.shape)
+# 	#print(target_image.shape)
+# 	#print(target_scores.shape)
 	
-	_, axis = matplotlib.pyplot.subplots(1, figsize=(12, 8))
+# 	_, axis = matplotlib.pyplot.subplots(1, figsize=(12, 8))
 
-	axis.imshow(target_image)
+# 	axis.imshow(target_image)
 
-	for target_index, target_score in enumerate(target_scores):
-		if target_score > 0:
-			xy = [
-				target_bounding_boxes[target_index][0],
-				target_bounding_boxes[target_index][1]
-			]
-			print(xy)
-			w = target_bounding_boxes[target_index][2] - target_bounding_boxes[target_index][0]
-			h = target_bounding_boxes[target_index][3] - target_bounding_boxes[target_index][1]
-			rectangle = matplotlib.patches.Rectangle(xy, w, h, edgecolor="r", facecolor="none")
-			#print(xy, w, h)
-			axis.add_patch(rectangle)
+# 	for target_index, target_score in enumerate(target_scores):
+# 		if target_score > 0:
+# 			xy = [
+# 				target_bounding_boxes[target_index][0],
+# 				target_bounding_boxes[target_index][1]
+# 			]
+# 			print(xy)
+# 			w = target_bounding_boxes[target_index][2] - target_bounding_boxes[target_index][0]
+# 			h = target_bounding_boxes[target_index][3] - target_bounding_boxes[target_index][1]
+# 			rectangle = matplotlib.patches.Rectangle(xy, w, h, edgecolor="r", facecolor="none")
+# 			#print(xy, w, h)
+# 			axis.add_patch(rectangle)
 
-	matplotlib.pyplot.show()
+# 	matplotlib.pyplot.show()
 
 
 
@@ -176,7 +176,7 @@ optimizer = keras.optimizers.Adam(0.0001)
 
 model.compile(optimizer)
 
-model.fit_generator(generator, epochs=1)
+model.fit_generator(generator, epochs=1, steps_per_epoch=len(training), batch_size=batch_size)
 
 # visualize prediction
 example, _ = generator.next()
