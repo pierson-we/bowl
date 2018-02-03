@@ -212,7 +212,7 @@ optimizer = keras.optimizers.Adam(0.0001)
 
 model.compile(optimizer)
 model.summary(line_length=150)
-model.fit_generator(generator, epochs=1, steps_per_epoch=len(training)/20)
+model.fit_generator(generator, epochs=10, steps_per_epoch=len(training))
 model.save_weights(weights_path)
 
 # visualize prediction
