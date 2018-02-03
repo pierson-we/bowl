@@ -5,8 +5,10 @@ import matplotlib
 import keras
 import json
 
-train_json_file = '/home/paperspace/bowl/DSB208_train.json'
-test_json_file = '/home/paperspace/bowl/DSB208_test.json'
+# train_json_file = '/home/paperspace/bowl/DSB208_train.json'
+# test_json_file = '/home/paperspace/bowl/DSB208_test.json'
+train_path = '/home/paperspace/bowl/input/stage1_train/'
+
 img_size=256
 batch_size=1
 
@@ -18,11 +20,11 @@ classes = {
     "nucleus": 1
 }
 
-with open(train_json_file, 'r') as file:
-	training = json.loads(file.read())
+# with open(train_json_file, 'r') as file:
+# 	training = json.loads(file.read())
 
-with open(test_json_file, 'r') as file:
-	test = json.loads(file.read())
+# with open(test_json_file, 'r') as file:
+# 	test = json.loads(file.read())
 
 # print(type(training))
 # print(training[0])
@@ -56,6 +58,8 @@ with open(test_json_file, 'r') as file:
 
 # with open(test_json_file, 'w') as file:
 # 	json.dump(test, file)
+
+training = rcnn_utils.make_json(train_path, img_size)
 
 generator = preprocessing.ObjectDetectionGenerator()
 # generator = preprocessing.ImageSegmentationGenerator()
