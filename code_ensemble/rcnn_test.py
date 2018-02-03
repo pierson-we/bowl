@@ -12,6 +12,7 @@ import skimage
 train_json_file = '/home/paperspace/bowl/input/DSB208_train.json'
 # test_json_file = '/home/paperspace/bowl/DSB208_test.json'
 train_path = '/home/paperspace/bowl/input/stage1_train/'
+weights_path = '/home/paperspace/bowl/models/rcnn.hdf5'
 
 img_size=256
 batch_size=1
@@ -212,6 +213,7 @@ optimizer = keras.optimizers.Adam(0.0001)
 model.compile(optimizer)
 model.summary(line_length=150)
 model.fit_generator(generator, epochs=1, steps_per_epoch=len(training)/20)
+model.save_weights(weights_path)
 
 # visualize prediction
 example, _ = next(generator)
