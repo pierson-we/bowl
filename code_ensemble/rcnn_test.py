@@ -86,7 +86,7 @@ class train_gen:
 				#target_bounding_boxes = numpy.reshape(target_bounding_boxes, (-1, 0, 4))
 				target_scores = numpy.expand_dims(item['class'], 0).astype(numpy.uint8)
 				#target_scores = numpy.reshape(target_scores, (-1, 0, 2))
-				#print(target_scores.shape)
+				print(target_bounding_boxes.shape)
 				metadata = numpy.array([[target_image.shape[1], target_image.shape[0], 1.0]])
 				#print(metadata.shape)
 				yield [target_bounding_boxes, target_image, target_scores, metadata], None
@@ -119,7 +119,7 @@ for _ in range(0,3):
 				target_bounding_boxes[target_index][0],
 				target_bounding_boxes[target_index][1]
 			]
-			print(xy)
+			#print(xy)
 			w = target_bounding_boxes[target_index][2] - target_bounding_boxes[target_index][0]
 			h = target_bounding_boxes[target_index][3] - target_bounding_boxes[target_index][1]
 			rectangle = matplotlib.patches.Rectangle(xy, w, h, edgecolor="r", facecolor="none")
