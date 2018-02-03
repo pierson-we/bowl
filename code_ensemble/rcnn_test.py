@@ -44,7 +44,7 @@ for item in training:
 	#item['shape'] = (item['image']['shape']['r'], item['image']['shape']['c'], item['image']['shape']['channels'])
 	#item['filename'] = item['image']['pathname']
 	#item['boxes'] = []
-	for x in item['objects']:
+	#for x in item['objects']:
 		#item['boxes'].append({})
 		#item['boxes'][-1]['class'] = x['class']
 		#item['boxes'].append([x['bounding_box']['minimum']['c'], x['bounding_box']['minimum']['r'], 
