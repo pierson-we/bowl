@@ -109,12 +109,11 @@ for _ in range(0,10):
 				target_bounding_boxes[target_index][0],
 				target_bounding_boxes[target_index][1]
 			]
-
+			print(xy)
 			w = target_bounding_boxes[target_index][2] - target_bounding_boxes[target_index][0]
 			h = target_bounding_boxes[target_index][3] - target_bounding_boxes[target_index][1]
-
 			rectangle = matplotlib.patches.Rectangle(xy, w, h, edgecolor="r", facecolor="none")
-
+			print(xy, w, h)
 			axis.add_patch(rectangle)
 
 	matplotlib.pyplot.show()
