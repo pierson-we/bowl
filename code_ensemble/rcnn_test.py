@@ -12,6 +12,7 @@ import skimage
 train_json_file = '/home/paperspace/bowl/input/DSB208_train.json'
 # test_json_file = '/home/paperspace/bowl/DSB208_test.json'
 train_path = '/home/paperspace/bowl/input/stage1_train/'
+test_path = '/home/paperspace/bowl/input/stage1_test/'
 weights_path = '/home/paperspace/bowl/models/rcnn.hdf5'
 
 img_size=256
