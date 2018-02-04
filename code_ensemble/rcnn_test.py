@@ -217,7 +217,7 @@ else:
 		example = next(test_generator)
 		target_bounding_boxes, target_image, target_labels, _ = example
 		#target_bounding_boxes = numpy.squeeze(target_bounding_boxes)
-		#target_image = numpy.squeeze(target_image)
+		target_image = numpy.squeeze(target_image)
 		#target_labels = numpy.argmax(target_labels, -1)
 		#target_labels = numpy.squeeze(target_labels)
 		# output_anchors, output_proposals, output_deltas, output_scores = model.predict(example)
