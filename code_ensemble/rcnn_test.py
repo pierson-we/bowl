@@ -212,7 +212,6 @@ if train:
 else:
 	test_generator = rcnn_utils.test_gen(test_path)
 	test_ids = next(os.walk(test_path))[1]
-
 	# visualize prediction
 	for i in range(0, len(test_ids)):
 		example = next(test_generator)
