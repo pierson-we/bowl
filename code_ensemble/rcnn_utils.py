@@ -135,6 +135,24 @@ def make_json(train_path, img_size): # , test_path, img_size, classes_csv):
 	#         X_test.loc[id_]['images'] = img
     return training
 
+def test_gen(test_path): # , test_path, img_size, classes_csv):
+	num_classes = 1
+	test_ids = next(os.walk(test_path))[1]
+	while True:
+		for id_ in test_ids:
+			path = test_path + id_
+# 			train_dict['filename'] = path + '/images/' + id_ + '.png'
+# 			train_dict['shape'] = (img_size, img_size, 3)
+			img = cv2.imread(path + '/images/' + id_ + '.png')
+			img = np.reshape(img, (1, img.shape[0], img.shape[1], 3))
+			# img = cv2.resize(img, (img_size, img_size))
+			# X_train[i] = img
+			# mask = np.zeros((img_size, img_size, num_classes), dtype=np.bool)
+			boxes = np.zeros((1, 200, 4))
+			scores = np.zeros((1, 200, 2))
+			meta = np.array([[1, img.shape[1], img.shape[2], 1.0]])
+			yield [boxes, img, scores, meta]
+
 def get_train_weights(xtr):
     train_weights = np.zeros(xtr.shape[0])
     for i in range(0, xtr.shape[0]):
