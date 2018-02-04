@@ -135,6 +135,31 @@ def make_json(train_path, img_size): # , test_path, img_size, classes_csv):
 	#         X_test.loc[id_]['images'] = img
     return training
 
+class train_gen:
+    def __init__(self, training):
+        self.training = training
+    def __iter__(self):
+        while True:
+            for item in self.training:
+                target_image = numpy.expand_dims(skimage.io.imread(item['filename']), 0).astype(keras.backend.floatx())
+                target_bounding_boxes = numpy.expand_dims(item['boxes'], 0).astype(numpy.float64)
+                for i in range(0, target_bounding_boxes.shape[1]):
+                    if target_bounding_boxes[:,i,2] == target_image.shape[2]:
+                        target_bounding_boxes[:,i,2] -= 1
+                    if target_bounding_boxes[:,i,3] == target_image.shape[1]:
+                        target_bounding_boxes[:,i,3] -= 1
+                    if target_bounding_boxes[:,i,2] > target_image.shape[2]:
+                        print('uh oh')
+                #target_bounding_boxes = numpy.reshape(target_bounding_boxes, (-1, 0, 4))
+                target_scores = numpy.expand_dims(item['class'], 0).astype(numpy.int64)
+                #target_scores = numpy.reshape(target_scores, (-1, 0, 2))
+                # print(target_bounding_boxes.shape)
+                metadata = numpy.array([[target_image.shape[2], target_image.shape[1], 1.0]])
+                #print(metadata.shape)
+                result = [target_bounding_boxes, target_image, target_scores, metadata], None
+                # print(result)
+                yield result
+
 def test_gen(test_path): # , test_path, img_size, classes_csv):
 	num_classes = 1
 	test_ids = next(os.walk(test_path))[1]
