@@ -19,7 +19,7 @@ weights_path = '/home/paperspace/bowl/models/rcnn.hdf5'
 img_size=256
 batch_size=1
 
-train = False
+train = True
 
 classes = {
 	"nucleus": 1
@@ -112,7 +112,8 @@ if train:
 	# 	def next(self):
 	# 		return next(self.generator)
 	generator = iter(train_gen(training))
-
+	model.fit_generator(generator, epochs=100, steps_per_epoch=len(training))
+	model.save_weights(weights_path)
 	# generator = keras_rcnn.preprocessing.ObjectDetectionGenerator()
 
 	# generator = generator.flow(training, classes)
