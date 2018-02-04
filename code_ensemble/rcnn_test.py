@@ -69,55 +69,42 @@ if train:
 		item['class'] = numpy.array([[0,1] for x in range(len(item['boxes']))])
 
 	print('loading data...')
-	# training = rcnn_utils.make_json(train_path, img_size)
-
 	# with open(train_json_file, 'w') as file:
 	# 	json.dump(training, file)
 	# sys.exit()
 	# with open(test_json_file, 'w') as file:
 	# 	json.dump(test, file)
 
-	# generator = preprocessing.ObjectDetectionGenerator()
-	# generator = preprocessing.ImageSegmentationGenerator()
-	# generator = generator.flow(training, classes, target_shape=(img_size, img_size), scale=1.0, batch_size=batch_size, ox=0, oy=0)
-
-	# val_generator = preprocessing.ObjectDetectionGenerator()
-
-	# val_generator = generator.flow(validation, classes, target_shape=(img_size, img_size), scale=1.0, batch_size=batch_size)
-
-	class train_gen:
-		def __init__(self, training):
-			self.training = training
-		def __iter__(self):
-			while True:
-				for item in self.training:
-					target_image = numpy.expand_dims(skimage.io.imread(item['filename']), 0).astype(keras.backend.floatx())
-					target_bounding_boxes = numpy.expand_dims(item['boxes'], 0).astype(numpy.float64)
-					for i in range(0, target_bounding_boxes.shape[1]):
-						if target_bounding_boxes[:,i,2] == target_image.shape[2]:
-							target_bounding_boxes[:,i,2] -= 1
-						if target_bounding_boxes[:,i,3] == target_image.shape[1]:
-							target_bounding_boxes[:,i,3] -= 1
-						if target_bounding_boxes[:,i,2] > target_image.shape[2]:
-							print('uh oh')
-					#target_bounding_boxes = numpy.reshape(target_bounding_boxes, (-1, 0, 4))
-					target_scores = numpy.expand_dims(item['class'], 0).astype(numpy.int64)
-					#target_scores = numpy.reshape(target_scores, (-1, 0, 2))
-					# print(target_bounding_boxes.shape)
-					metadata = numpy.array([[target_image.shape[2], target_image.shape[1], 1.0]])
-					#print(metadata.shape)
-					result = [target_bounding_boxes, target_image, target_scores, metadata], None
-					# print(result)
-					yield result
+	# class train_gen:
+	# 	def __init__(self, training):
+	# 		self.training = training
+	# 	def __iter__(self):
+	# 		while True:
+	# 			for item in self.training:
+	# 				target_image = numpy.expand_dims(skimage.io.imread(item['filename']), 0).astype(keras.backend.floatx())
+	# 				target_bounding_boxes = numpy.expand_dims(item['boxes'], 0).astype(numpy.float64)
+	# 				for i in range(0, target_bounding_boxes.shape[1]):
+	# 					if target_bounding_boxes[:,i,2] == target_image.shape[2]:
+	# 						target_bounding_boxes[:,i,2] -= 1
+	# 					if target_bounding_boxes[:,i,3] == target_image.shape[1]:
+	# 						target_bounding_boxes[:,i,3] -= 1
+	# 					if target_bounding_boxes[:,i,2] > target_image.shape[2]:
+	# 						print('uh oh')
+	# 				#target_bounding_boxes = numpy.reshape(target_bounding_boxes, (-1, 0, 4))
+	# 				target_scores = numpy.expand_dims(item['class'], 0).astype(numpy.int64)
+	# 				#target_scores = numpy.reshape(target_scores, (-1, 0, 2))
+	# 				# print(target_bounding_boxes.shape)
+	# 				metadata = numpy.array([[target_image.shape[2], target_image.shape[1], 1.0]])
+	# 				#print(metadata.shape)
+	# 				result = [target_bounding_boxes, target_image, target_scores, metadata], None
+	# 				# print(result)
+	# 				yield result
 	# 	def next(self):
 	# 		return next(self.generator)
-	generator = iter(train_gen(training))
+	generator = iter(rcnn_utils.train_gen(training))
 	model.fit_generator(generator, epochs=100, steps_per_epoch=len(training))
 	model.save_weights(weights_path)
-	# generator = keras_rcnn.preprocessing.ObjectDetectionGenerator()
-
-	# generator = generator.flow(training, classes)
-
+    
 	# for _ in range(0,1):
 	# 	(target_bounding_boxes, target_image, target_scores, meta), _ = next(generator)
 
