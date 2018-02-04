@@ -150,7 +150,7 @@ def test_gen(test_path): # , test_path, img_size, classes_csv):
 			# mask = np.zeros((img_size, img_size, num_classes), dtype=np.bool)
 			boxes = np.zeros((1, 200, 4))
 			scores = np.zeros((1, 200, 2))
-			meta = np.array([[1, img.shape[1], img.shape[2], 1.0]])
+			meta = np.array([[img.shape[1], img.shape[2], 1.0]])
 			yield [boxes, img, scores, meta]
 
 def get_train_weights(xtr):
