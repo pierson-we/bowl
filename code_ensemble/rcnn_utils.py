@@ -144,7 +144,7 @@ def test_gen(test_path): # , test_path, img_size, classes_csv):
 # 			train_dict['filename'] = path + '/images/' + id_ + '.png'
 # 			train_dict['shape'] = (img_size, img_size, 3)
 			img = cv2.imread(path + '/images/' + id_ + '.png')
-			img = np.reshape(img, (1, img.shape[0], img.shape[1], 3))
+			img = np.reshape(img, (img.shape[0], img.shape[1], 3))
 			# img = cv2.resize(img, (img_size, img_size))
 			# X_train[i] = img
 			# mask = np.zeros((img_size, img_size, num_classes), dtype=np.bool)
