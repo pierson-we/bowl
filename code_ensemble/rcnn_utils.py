@@ -186,10 +186,10 @@ class train_gen:
                 #         elif target_bounding_boxes[i,2] > 0 and target_bounding_boxes[i,2] <= target_image.shape[2]:
                 #             valid = True
                 #     if valid:
-                if target_bounding_boxes[i,2] >= target_image.shape[2]:
-                    target_bounding_boxes[i,2] = target_image.shape[2] - 1
-                if target_bounding_boxes[i,3] >= target_image.shape[1]:
-                    target_bounding_boxes[i,3] = target_image.shape[1] - 1
+                #if target_bounding_boxes[i,2] >= target_image.shape[2]:
+                #    target_bounding_boxes[i,2] = target_image.shape[2] - 1
+                #if target_bounding_boxes[i,3] >= target_image.shape[1]:
+                #    target_bounding_boxes[i,3] = target_image.shape[1] - 1
                 #         if target_bounding_boxes[i,2] > target_image.shape[2]:
                 #             print('uh oh')
                 #         cropped_bounding_boxes.append(target_bounding_boxes[i,:])
