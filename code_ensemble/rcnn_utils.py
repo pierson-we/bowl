@@ -11,10 +11,13 @@ import urllib.request
 import shutil
 import cv2
 import pandas as pd
+import keras
+import random
 from skimage import exposure
 from skimage import transform
 import matplotlib.pyplot as plt
 from scipy import ndimage
+import matplotlib
 
 ############################################################
 #  Bounding Boxes
@@ -25,24 +28,23 @@ def extract_bboxes(mask):
     mask: [height, width, num_instances]. Mask pixels are either 1 or 0.
     Returns: bbox array [num_instances, (y1, x1, y2, x2)].
     """
-    boxes = []
-    for i in range(mask.shape[-1]):
-        m = mask[:, :, i]
-        # Bounding box.
-        horizontal_indicies = np.where(np.any(m, axis=0))[0]
-        vertical_indicies = np.where(np.any(m, axis=1))[0]
-        if horizontal_indicies.shape[0]:
-            x1, x2 = horizontal_indicies[[0, -1]]
-            y1, y2 = vertical_indicies[[0, -1]]
-            # x2 and y2 should not be part of the box. Increment by 1.
-            x2 += 1
-            y2 += 1
-        else:
-            # No mask for this instance. Might happen due to
-            # resizing or cropping. Set bbox to zeros
-            x1, x2, y1, y2 = 0, 0, 0, 0
-        boxes.append({'class': 1, 'y1': y1, 'x1': x1, 'y2': y2, 'x2': x2})
-    return boxes
+    
+    # Bounding box.
+    horizontal_indicies = np.where(np.any(mask, axis=0))[0]
+    vertical_indicies = np.where(np.any(mask, axis=1))[0]
+    if horizontal_indicies.shape[0]:
+        x1, x2 = horizontal_indicies[[0, -1]]
+        y1, y2 = vertical_indicies[[0, -1]]
+        # x2 and y2 should not be part of the box. Increment by 1.
+        x2 += 1
+        y2 += 1
+    else:
+        # No mask for this instance. Might happen due to
+        # resizing or cropping. Set bbox to zeros
+        x1, x2, y1, y2 = 0, 0, 0, 0
+    box = np.array([x1, y1, x2, y2])
+    # boxes.append({'class': 1, 'y1': y1, 'x1': x1, 'y2': y2, 'x2': x2})
+    return box
 
 def make_borders(img):
     img = np.where(img >= 0.5, 0, 1) #this is the mask for the water/non water raster
@@ -136,25 +138,70 @@ def make_json(train_path, img_size): # , test_path, img_size, classes_csv):
     return training
 
 class train_gen:
-    def __init__(self, training):
+    def __init__(self, training, target_size=(128, 128)):
         self.training = training
+        self.target_size = target_size
     def __iter__(self):
         while True:
             for item in self.training:
-                target_image = numpy.expand_dims(skimage.io.imread(item['filename']), 0).astype(keras.backend.floatx())
-                target_bounding_boxes = numpy.expand_dims(item['boxes'], 0).astype(numpy.float64)
-                for i in range(0, target_bounding_boxes.shape[1]):
-                    if target_bounding_boxes[:,i,2] == target_image.shape[2]:
-                        target_bounding_boxes[:,i,2] -= 1
-                    if target_bounding_boxes[:,i,3] == target_image.shape[1]:
-                        target_bounding_boxes[:,i,3] -= 1
-                    if target_bounding_boxes[:,i,2] > target_image.shape[2]:
-                        print('uh oh')
-                #target_bounding_boxes = numpy.reshape(target_bounding_boxes, (-1, 0, 4))
-                target_scores = numpy.expand_dims(item['class'], 0).astype(numpy.int64)
-                #target_scores = numpy.reshape(target_scores, (-1, 0, 2))
+                target_image = np.expand_dims(skimage.io.imread(item['filename']), 0).astype(keras.backend.floatx())
+                target_bounding_boxes = item['boxes'].astype(np.float64)
+                crop = [0,0]
+                if target_image.shape[1] > self.target_size[0]:
+                    crop[0] = random.randint(0, target_image.shape[1] - self.target_size[0])
+                if target_image.shape[2] > self.target_size[1]:
+                    crop[1] = random.randint(0, target_image.shape[2] - self.target_size[1])
+                target_image = target_image[:, crop[0]:crop[0]+self.target_size[0], crop[1]:crop[1]+self.target_size[1], :]
+                boxes = []
+                for object_ in item['objects']:
+                    mask = skimage.io.imread(object_['mask']['pathname'])[crop[0]:crop[0]+self.target_size[0], crop[1]:crop[1]+self.target_size[1]]
+                    # _, axis = matplotlib.pyplot.subplots(1)
+                    # axis.imshow(mask)
+                    box = extract_bboxes(mask)
+                    if np.amax(box) > 0:
+                        if box[2] == target_image.shape[2]:
+                            box[2] = target_image.shape[2] - 1
+                        if box[3] == target_image.shape[1]:
+                            box[3] = target_image.shape[1] - 1
+                        boxes.append(np.reshape(box, (1, 4)))
+                target_bounding_boxes = np.concatenate([box for box in boxes], axis=0)
+                
+                # cropped_bounding_boxes = []
+                # for i in range(0, target_bounding_boxes.shape[1]):
+                #     x_diff, y_diff = 0, 0
+                #     target_bounding_boxes[i,0] = max(0, target_bounding_boxes[i,0] - crop[1])
+                #     target_bounding_boxes[i,2] = max(0, target_bounding_boxes[i,2] - crop[1])
+                #     target_bounding_boxes[i,1] = max(0, target_bounding_boxes[i,1] - crop[0])
+                #     target_bounding_boxes[i,3] = max(0, target_bounding_boxes[i,3] - crop[0])
+                    
+                #     valid = False
+                #     if target_bounding_boxes[i,0] > 0 and target_bounding_boxes[i,0] < target_image.shape[2]:
+                #         if target_bounding_boxes[i,1] > 0 and target_bounding_boxes[i,1] < target_image.shape[1]:
+                #             valid = True
+                #         elif target_bounding_boxes[i,3] > 0 and target_bounding_boxes[i,3] < target_image.shape[1]:
+                #             valid = True
+                #     elif target_bounding_boxes[i,1] > 0 and target_bounding_boxes[i,1] <= target_image.shape[1]:
+                #         if target_bounding_boxes[i,0] > 0 and target_bounding_boxes[i,0] <= target_image.shape[2]:
+                #             valid = True
+                #         elif target_bounding_boxes[i,2] > 0 and target_bounding_boxes[i,2] <= target_image.shape[2]:
+                #             valid = True
+                #     if valid:
+                if target_bounding_boxes[i,2] >= target_image.shape[2]:
+                    target_bounding_boxes[i,2] = target_image.shape[2] - 1
+                if target_bounding_boxes[i,3] >= target_image.shape[1]:
+                    target_bounding_boxes[i,3] = target_image.shape[1] - 1
+                #         if target_bounding_boxes[i,2] > target_image.shape[2]:
+                #             print('uh oh')
+                #         cropped_bounding_boxes.append(target_bounding_boxes[i,:])
+                target_bounding_boxes = np.expand_dims(np.array(target_bounding_boxes), 0).astype(np.float64)
+
+                #target_bounding_boxes = np.reshape(target_bounding_boxes, (-1, 0, 4))
+                target_scores = np.expand_dims(item['class'], 0).astype(np.int64)
+                target_scores = target_scores[:,:target_bounding_boxes.shape[1], :]
+
+                #target_scores = np.reshape(target_scores, (-1, 0, 2))
                 # print(target_bounding_boxes.shape)
-                metadata = numpy.array([[target_image.shape[2], target_image.shape[1], 1.0]])
+                metadata = np.array([[target_image.shape[2], target_image.shape[1], 1.0]])
                 #print(metadata.shape)
                 result = [target_bounding_boxes, target_image, target_scores, metadata], None
                 # print(result)
@@ -238,7 +285,7 @@ def generator(xtr, xval, ytr, yval, batch_size):
 from skimage.morphology import label # label regions
 def rle_encoding(x):
     '''
-    x: numpy array of shape (height, width), 1 - mask, 0 - background
+    x: np array of shape (height, width), 1 - mask, 0 - background
     Returns run length as list
     '''
     dots = np.where(x.T.flatten()==1)[0] # .T sets Fortran order down-then-right
