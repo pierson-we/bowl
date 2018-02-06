@@ -145,16 +145,18 @@ class train_gen:
         while True:
             for item in self.training:
                 target_image = np.expand_dims(skimage.io.imread(item['filename']), 0).astype(keras.backend.floatx())
-                target_bounding_boxes = item['boxes'].astype(np.float64)
+                #target_bounding_boxes = item['boxes'].astype(np.float64)
                 crop = [0,0]
-                if target_image.shape[1] > self.target_size[0]:
-                    crop[0] = random.randint(0, target_image.shape[1] - self.target_size[0])
-                if target_image.shape[2] > self.target_size[1]:
-                    crop[1] = random.randint(0, target_image.shape[2] - self.target_size[1])
-                target_image = target_image[:, crop[0]:crop[0]+self.target_size[0], crop[1]:crop[1]+self.target_size[1], :]
+                if self.target_size != (None, None):
+                    if target_image.shape[1] > self.target_size[0]:
+                        crop[0] = random.randint(0, target_image.shape[1] - self.target_size[0])
+                    if target_image.shape[2] > self.target_size[1]:
+                        crop[1] = random.randint(0, target_image.shape[2] - self.target_size[1])
+                    target_image = target_image[:, crop[0]:crop[0]+self.target_size[0], crop[1]:crop[1]+self.target_size[1], :]
                 boxes = []
                 for object_ in item['objects']:
-                    mask = skimage.io.imread(object_['mask']['pathname'])[crop[0]:crop[0]+self.target_size[0], crop[1]:crop[1]+self.target_size[1]]
+                    if self.target_size != (None, None):
+                        mask = skimage.io.imread(object_['mask']['pathname'])[crop[0]:crop[0]+self.target_size[0], crop[1]:crop[1]+self.target_size[1]]
                     # _, axis = matplotlib.pyplot.subplots(1)
                     # axis.imshow(mask)
                     box = extract_bboxes(mask)
@@ -195,11 +197,13 @@ class train_gen:
                 #             print('uh oh')
                 #         cropped_bounding_boxes.append(target_bounding_boxes[i,:])
                 target_bounding_boxes = np.expand_dims(np.array(target_bounding_boxes), 0).astype(np.float64)
-
+                #print(target_bounding_boxes.shape)
+                #print(target_image.shape)
                 #target_bounding_boxes = np.reshape(target_bounding_boxes, (-1, 0, 4))
-                target_scores = np.expand_dims(item['class'], 0).astype(np.int64)
-                target_scores = target_scores[:,:target_bounding_boxes.shape[1], :]
-
+                #target_scores = np.expand_dims(item['class'], 0).astype(np.int64)
+                #target_scores = target_scores[:,:target_bounding_boxes.shape[1], :]
+                target_scores = np.reshape(np.array([[0, 1] for i in range(0, target_bounding_boxes.shape[1])]), (1, -1, 2))
+                #print(target_scores.shape)
                 #target_scores = np.reshape(target_scores, (-1, 0, 2))
                 # print(target_bounding_boxes.shape)
                 metadata = np.array([[target_image.shape[2], target_image.shape[1], 1.0]])
