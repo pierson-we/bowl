@@ -109,7 +109,7 @@ def make_json(train_path, img_size): # , test_path, img_size, classes_csv):
         #     X_train[i] = img * (105./np.mean(img))
 
         # print(Y_train[i].shape)
-    # X_test = np.zeros((len(test_ids), img_size, img_size, 3), dtype=np.uint8)
+        # X_test = np.zeros((len(test_ids), img_size, img_size, 3), dtype=np.uint8)
 	#     sizes_test = []
 	#     X_test = pd.DataFrame(index=test_ids)
 	#     X_test['ImageID'] = test_ids
@@ -164,8 +164,9 @@ class train_gen:
                         if box[3] == target_image.shape[1]:
                             box[3] = target_image.shape[1] - 1
                         boxes.append(np.reshape(box, (1, 4)))
+                if len(boxes) < 1:
+                    continue
                 target_bounding_boxes = np.concatenate([box for box in boxes], axis=0)
-                
                 # cropped_bounding_boxes = []
                 # for i in range(0, target_bounding_boxes.shape[1]):
                 #     x_diff, y_diff = 0, 0
