@@ -157,6 +157,8 @@ class train_gen:
                 for object_ in item['objects']:
                     if self.target_size != (None, None):
                         mask = skimage.io.imread(object_['mask']['pathname'])[crop[0]:crop[0]+self.target_size[0], crop[1]:crop[1]+self.target_size[1]]
+                    else:
+                        mask = skimage.io.imread(object_['mask']['pathname'])
                     # _, axis = matplotlib.pyplot.subplots(1)
                     # axis.imshow(mask)
                     box = extract_bboxes(mask)
