@@ -17,6 +17,7 @@ from skimage import exposure
 from skimage import transform
 import matplotlib.pyplot as plt
 from scipy import ndimage
+from scipy.spatial.distance import sqeuclidean
 import matplotlib
 
 ############################################################
@@ -138,13 +139,17 @@ def make_json(train_path, img_size): # , test_path, img_size, classes_csv):
     return training
 
 class train_gen:
-    def __init__(self, training, target_size=(128, 128)):
+    def __init__(self, training, nuclei_clusters, num_classes, batch_size, target_size=(128, 128)):
         self.training = training
         self.target_size = target_size
+        self.nuclei_clusters = nuclei_clusters
+        self.num_classes = num_classes
+        self.batch_size = batch_size
     def __iter__(self):
         while True:
+            batch = []
             for item in self.training:
-                target_image = np.expand_dims(skimage.io.imread(item['filename']), 0).astype(keras.backend.floatx())
+                target_image = np.expand_dims(skimage.io.imread(item['filename']), 0).astype(np.uint8)
                 #target_bounding_boxes = item['boxes'].astype(np.float64)
                 crop = [0,0]
                 if self.target_size != (None, None):
@@ -154,6 +159,7 @@ class train_gen:
                         crop[1] = random.randint(0, target_image.shape[2] - self.target_size[1])
                     target_image = target_image[:, crop[0]:crop[0]+self.target_size[0], crop[1]:crop[1]+self.target_size[1], :]
                 boxes = []
+                scores = []
                 for object_ in item['objects']:
                     if self.target_size != (None, None):
                         mask = skimage.io.imread(object_['mask']['pathname'])[crop[0]:crop[0]+self.target_size[0], crop[1]:crop[1]+self.target_size[1]]
@@ -163,14 +169,44 @@ class train_gen:
                     # axis.imshow(mask)
                     box = extract_bboxes(mask)
                     if np.amax(box) > 0:
+                        skip = False
+                        for dim in box.shape:
+                            if dim == 0:
+                                skip = True
+                        if skip:
+                            continue
                         if box[2] == target_image.shape[2]:
                             box[2] = target_image.shape[2] - 1
                         if box[3] == target_image.shape[1]:
                             box[3] = target_image.shape[1] - 1
+                        #print(target_image.shape)
+                        img = np.squeeze(target_image)[box[1]:box[3],box[0]:box[2],:]
+                        skip = False
+                        for dim in img.shape:
+                            if dim == 0:
+                                skip = True
+                        if skip:
+                            continue
+                        #print(img.shape)
+                        clust_img = skimage.transform.resize(img, (32, 32, 3), preserve_range=True)
+                        nuc_list = []
+                        ch_avgs = []
+                        for i in range (0, 3):
+                            hist = np.histogram(clust_img[:,:,i], range=(0,255), bins=10)
+                            nuc_list += hist[0].tolist()
+                            ch_avgs.append(np.mean(clust_img[:,:,i]))
+                        nuc_list += [np.std(ch_avgs)*20]
+                        dist = []
+                        for class_ in self.nuclei_clusters:
+                            dist.append(sqeuclidean(nuc_list, self.nuclei_clusters[class_]))
+                        nucleus_class = np.zeros((self.num_classes))
+                        nucleus_class[np.argmin(dist) + 1] = 1
                         boxes.append(np.reshape(box, (1, 4)))
+                        scores.append(np.expand_dims(nucleus_class, 0))
                 if len(boxes) < 1:
                     continue
                 target_bounding_boxes = np.concatenate([box for box in boxes], axis=0)
+                target_scores = np.expand_dims(np.concatenate([score for score in scores], axis=0), 0)
                 # cropped_bounding_boxes = []
                 # for i in range(0, target_bounding_boxes.shape[1]):
                 #     x_diff, y_diff = 0, 0
@@ -204,31 +240,39 @@ class train_gen:
                 #target_bounding_boxes = np.reshape(target_bounding_boxes, (-1, 0, 4))
                 #target_scores = np.expand_dims(item['class'], 0).astype(np.int64)
                 #target_scores = target_scores[:,:target_bounding_boxes.shape[1], :]
-                target_scores = np.reshape(np.array([[0, 1] for i in range(0, target_bounding_boxes.shape[1])]), (1, -1, 2))
+                #target_scores = np.reshape(np.array([[0, 1] for i in range(0, target_bounding_boxes.shape[1])]), (1, -1, 2))
                 #print(target_scores.shape)
                 #target_scores = np.reshape(target_scores, (-1, 0, 2))
                 # print(target_bounding_boxes.shape)
                 metadata = np.array([[target_image.shape[2], target_image.shape[1], 1.0]])
                 #print(metadata.shape)
-                result = [target_bounding_boxes, target_image, target_scores, metadata], None
+                result = [target_bounding_boxes, target_image, target_scores, metadata]
+                batch.append(result)
+                if len(batch) == self.batch_size:
+                    target_bounding_boxes = np.concatenate([sample[0] for sample in batch])
+                    target_image = np.concatenate([sample[1] for sample in batch])
+                    target_scores = np.concatenate([sample[2] for sample in batch])
+                    metadata = np.concatenate([sample[3] for sample in batch])
+                    batch = []
+                    yield [target_bounding_boxes, target_image, target_scores, metadata], None                               
                 # print(result)
-                yield result
+                #yield result
 
-def test_gen(test_path): # , test_path, img_size, classes_csv):
-	num_classes = 1
+def test_gen(test_path, num_classes): # , test_path, img_size, classes_csv):
+	# num_classes = 1
 	test_ids = next(os.walk(test_path))[1]
 	while True:
 		for id_ in test_ids:
 			path = test_path + id_
-# 			train_dict['filename'] = path + '/images/' + id_ + '.png'
-# 			train_dict['shape'] = (img_size, img_size, 3)
+			# train_dict['filename'] = path + '/images/' + id_ + '.png'
+			# train_dict['shape'] = (img_size, img_size, 3)
 			img = cv2.imread(path + '/images/' + id_ + '.png')
 			img = np.reshape(img, (1, img.shape[0], img.shape[1], 3))
 			# img = cv2.resize(img, (img_size, img_size))
 			# X_train[i] = img
 			# mask = np.zeros((img_size, img_size, num_classes), dtype=np.bool)
 			boxes = np.zeros((1, 200, 4))
-			scores = np.zeros((1, 200, 2))
+			scores = np.zeros((1, 200, num_classes))
 			meta = np.array([[img.shape[1], img.shape[2], 1.0]])
 			yield [boxes, img, scores, meta]
 
