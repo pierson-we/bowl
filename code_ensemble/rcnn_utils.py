@@ -1,6 +1,7 @@
 import sys
 import os
 import math
+import copy
 import random
 import numpy as np
 import tensorflow as tf
@@ -150,6 +151,7 @@ class train_gen:
             batch = []
             for item in self.training:
                 target_image = np.expand_dims(skimage.io.imread(item['filename']), 0).astype(np.uint8)
+                target_image_orig = copy.copy(target_image)
                 #target_bounding_boxes = item['boxes'].astype(np.float64)
                 crop = [0,0]
                 if self.target_size != (None, None):
@@ -188,20 +190,22 @@ class train_gen:
                         if skip:
                             continue
                         #print(img.shape)
-                        clust_img = skimage.transform.resize(img, (32, 32, 3), preserve_range=True)
-                        nuc_list = []
+                        
                         ch_avgs = []
                         for i in range (0, 3):
-                            hist = np.histogram(clust_img[:,:,i], range=(0,255), bins=10)
-                            nuc_list += hist[0].tolist()
-                            ch_avgs.append(np.mean(clust_img[:,:,i]))
-                        nuc_list += [np.std(ch_avgs)*20]
+                            ch_avgs.append(np.mean(target_image_orig[0,:,:,i]))
+                        
+                        indices = mask.nonzero()
+                        pixels = np.reshape(np.squeeze(target_image)[indices[0], indices[1], :], (-1))
+                        #print(pixels.shape)
+                        hist = (np.histogram(pixels, range=(0,255), bins=5)[0] / pixels.shape[0]).tolist()
+                        hist += [np.std(ch_avgs)/10]
                         dist = []
                         for class_ in self.nuclei_clusters:
-                            dist.append(sqeuclidean(nuc_list, self.nuclei_clusters[class_]))
+                            dist.append(sqeuclidean(hist, self.nuclei_clusters[class_]))
                         nucleus_class = np.zeros((self.num_classes))
                         nucleus_class[np.argmin(dist) + 1] = 1
-                        boxes.append(np.reshape(box, (1, 4)))
+                        boxes.append(np.expand_dims(box, 0))
                         scores.append(np.expand_dims(nucleus_class, 0))
                 if len(boxes) < 1:
                     continue
