@@ -215,7 +215,7 @@ def clean_img(x):
     # return opening(closing(x, disk(1)), disk(3))
     return x
 
-from crf import crf
+#from crf import crf
 def format_preds(Y_train, test_img_df):
     # test_img_df = crf(Y_train, test_img_df)
     test_img_df = test_img_df.apply(resize_masks, axis=1)
