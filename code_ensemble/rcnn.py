@@ -10,7 +10,7 @@ from keras.losses import logcosh
 from keras import callbacks
 from keras.models import Model
 from keras.layers import Input, Conv2D, concatenate, average, Dropout
-from keras_rcnn.models import RCNN
+from keras_rcnn.models import RDeepLab
 import matplotlib.pyplot as plt
 import utils
 import models
@@ -120,12 +120,13 @@ if __name__ == "__main__":
 
     model_input = Input((img_size, img_size, img_channels))
 
-    model = RCNN(model_input, classes=num_classes + 1)
+    model = RDeepLab(model_input, classes=num_classes + 1)
     
     adam = Adam(0.0001)
 
     model.compile(optimizer=adam) # , loss='binary_crossentropy', metrics=[losses.mean_iou, losses.dice_coef, losses.precision, 'acc'])
-
+    model.summary()
+    sys.exit()
     model.fit(x=xtr, y=ytr, batch_size=batch_size, validation_data=(xval, yval), sample_weight=train_weights, epochs=1)
 
     # model.save_weights('/home/paperspace/bowl/models/ensemble_weights.hdf5')
